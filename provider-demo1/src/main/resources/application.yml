@@ -4,7 +4,7 @@ server:
 #Eureka实例名，集群中根据这里相互识别
 spring:
   application:
-    name: provider1
+    name: provider2
 
 eureka:
   #客户端
