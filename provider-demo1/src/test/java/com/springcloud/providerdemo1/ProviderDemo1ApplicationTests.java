@@ -1,7 +1,9 @@
 package com.springcloud.providerdemo1;
 
+import com.springcloud.providerdemo1.rabbitmq.service.impl.RabbitSender;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -9,8 +11,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class ProviderDemo1ApplicationTests {
 
+    @Autowired
+    private RabbitSender rabbitSender;
+
     @Test
-    public void contextLoads() {
+    public void rabbitSendMes() {
+        rabbitSender.send();
     }
+
+
 
 }
