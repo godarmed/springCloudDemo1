@@ -1,15 +1,20 @@
-#¶Ë¿ÚºÅ
+#ç«¯å£å·
 server:
   port: 8889
-#EurekaÊµÀıÃû£¬¼¯ÈºÖĞ¸ù¾İÕâÀïÏà»¥Ê¶±ğ
+#Eurekaå®ä¾‹åï¼Œé›†ç¾¤ä¸­æ ¹æ®è¿™é‡Œç›¸äº’è¯†åˆ«
 spring:
   application:
-    name: provider2
+    name: provider1
+  rabbitmq:
+    host: 149.129.118.215
+    port: 5672
+    username: admin
+    password: Zzy123456
 
 eureka:
-  #¿Í»§¶Ë
+  #å®¢æˆ·ç«¯
   client:
-    #×¢²áÖĞĞÄµØÖ·
+    #æ³¨å†Œä¸­å¿ƒåœ°å€
     service-url:
       defaultZone: http://localhost:8888/eureka/
 
