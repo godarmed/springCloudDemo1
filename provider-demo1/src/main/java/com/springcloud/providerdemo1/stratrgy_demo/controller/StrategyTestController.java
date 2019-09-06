@@ -1,16 +1,14 @@
-package com.springcloud.providerdemo1.controller;
+package com.springcloud.providerdemo1.stratrgy_demo.controller;
 
 
-import com.springcloud.providerdemo1.service.service_one.AddService;
-import com.springcloud.providerdemo1.service.service_two.MulService;
-import com.springcloud.providerdemo1.strategy.RouteContext;
+import com.springcloud.providerdemo1.stratrgy_demo.service.service_one.AddService;
+import com.springcloud.providerdemo1.stratrgy_demo.service.service_two.MulService;
+import com.springcloud.providerdemo1.stratrgy_demo.strategy.RouteContext;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 

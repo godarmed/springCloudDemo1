@@ -1,4 +1,4 @@
-package com.springcloud.providerdemo1.strategy;
+package com.springcloud.providerdemo1.stratrgy_demo.strategy;
 
 import org.springframework.stereotype.Service;
 

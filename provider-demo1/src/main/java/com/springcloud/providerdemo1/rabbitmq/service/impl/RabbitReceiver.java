@@ -27,14 +27,16 @@ public class RabbitReceiver {
         log.info("mqReceive = {}",msg);
     }
 
-    @RabbitListener(queues= {"usa.news"})
+    @RabbitListener(queues= {"usa.news"},
+            containerFactory = "singleListenerContainer",
+            errorHandler = "rabbitListenerErrorHandler")
     public void doChangeOne(Message<String> request) {
         //log.info("body：[{}]",body);
         //log.info("Headers：[{}]",headers);
         log.info("消息中队列名称:[{}]",request.getQueueName());
         log.info("实际队列名称:[{}]","usa.news");
         log.info("交换机名称:[{}]",request.getExchange());
-        log.info("消息体:[{}]",request.getMessages());
+        log.info("消息体:[{}]",request.getMessages()+""+1/0);
         //log.info("消息体:[{}]",1/0);
     }
 

@@ -6,10 +6,10 @@ spring:
   application:
     name: provider2
   rabbitmq:
-    host: localhost
+    host: 149.129.118.215
     port: 5673
-    username: guest
-    password: guest
+    username: admin
+    password: Zzy123456
     publisher-confirms: true
     virtual-host: /
 
