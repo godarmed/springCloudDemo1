@@ -18,3 +18,6 @@ eureka:
     service-url:
       defaultZone: http://localhost:8888/eureka/
 
+
+executor:
+  core-pool-size:

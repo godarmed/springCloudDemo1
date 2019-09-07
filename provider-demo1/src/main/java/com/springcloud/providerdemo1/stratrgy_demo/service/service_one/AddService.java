@@ -1,6 +1,6 @@
-package com.springcloud.providerdemo1.service.service_one;
+package com.springcloud.providerdemo1.stratrgy_demo.service.service_one;
 
-import com.springcloud.providerdemo1.strategy.RouteStrategy;
+import com.springcloud.providerdemo1.stratrgy_demo.strategy.RouteStrategy;
 import org.springframework.stereotype.Service;
 
 @Service
