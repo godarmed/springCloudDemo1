@@ -11,21 +11,20 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties(prefix = "spring")
 public class RabbitMqConfig {
-    @Value("${rabbitmq.host}")
+    @Value("${spring.rabbitmq.host}")
     private String rabbitmq_host;
 
-    @Value("${rabbitmq.port}")
+    @Value("${spring.rabbitmq.port}")
     private Integer rabbitmq_port;
 
-    @Value("${rabbitmq.username}")
+    @Value("${spring.rabbitmq.username}")
     private String rabbitmq_username;
 
-    @Value("${rabbitmq.password}")
+    @Value("${spring.rabbitmq.password}")
     private String rabbitmq_password;
 
-    @Bean
+  /*  @Bean
     public ConnectionFactory connectionFactory(){
         CachingConnectionFactory factory = new CachingConnectionFactory();
         factory.setHost(rabbitmq_host);
@@ -33,9 +32,9 @@ public class RabbitMqConfig {
         factory.setUsername(rabbitmq_username);
         factory.setPassword(rabbitmq_password);
         return factory;
-    }
+    }*/
 
-    @Bean(name = "singleListenerContiainer")
+   /* @Bean(name = "singleListenerContiainer")
     public SimpleRabbitListenerContainerFactory listenerContainerFactory(){
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
         // setConnectionFactory：设置spring-amqp的ConnectionFactory。
@@ -54,13 +53,13 @@ public class RabbitMqConfig {
         //设置当rabbitmq收到nack/reject确认信息时的处理方式，设为true，扔回queue头部，设为false，丢弃。
         factory.setDefaultRequeueRejected(true);
         //setErrorHandler：实现ErrorHandler接口设置进去，所有未catch的异常都会由ErrorHandler处理。
-       /* factory.setErrorHandler(new ErrorHandler() {
+       *//* factory.setErrorHandler(new ErrorHandler() {
             @Override
             public void handleError(Throwable throwable) {
                 System.out.println("------------------------->丢弃消息啦"+throwable);
             }
-        });*/
+        });*//*
         factory.setAcknowledgeMode(AcknowledgeMode.AUTO);
         return factory;
-    }
+    }*/
 }

@@ -1,7 +1,5 @@
-#端口号
 server:
   port: 8889
-#Eureka实例名，集群中根据这里相互识别
 spring:
   application:
     name: provider1
@@ -12,12 +10,6 @@ spring:
     password: Zzy123456
 
 eureka:
-  #客户端
   client:
-    #注册中心地址
     service-url:
       defaultZone: http://localhost:8888/eureka/
-
-
-executor:
-  core-pool-size:
