@@ -12,11 +12,11 @@ public class ScheduledTest {
     /*
     * 每5秒执行该方法
     * */
-    @Scheduled(cron = "0/5 * * * * ?")
+    /*@Scheduled(cron = "0/5 * * * * ?")
     public void corn() throws InterruptedException {
         log.info("当前时间:[{}]",new Date(System.currentTimeMillis()));
         Thread.currentThread().sleep(6000);
-    }
+    }*/
 
     /*
      * 每1秒执行该方法

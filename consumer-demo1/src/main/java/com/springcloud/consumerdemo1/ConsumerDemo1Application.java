@@ -1,34 +1,39 @@
-package com.springcloud.providerdemo1;
+package com.springcloud.consumerdemo1;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
-import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
-import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 @EnableDiscoveryClient
+@EnableFeignClients
+//@RibbonClient(name = "provider-8783")
 @EnableRabbit
 @EnableAsync
 @EnableScheduling
-public class ProviderDemo1Application {
+public class ConsumerDemo1Application {
 
     public static void main(String[] args) {
-        SpringApplication.run(ProviderDemo1Application.class, args);
+        SpringApplication.run(ConsumerDemo1Application.class, args);
     }
 
+    /**
+     * @Description:
+     * @Param:
+     * @return:
+     * @Author:
+     * @Date: 2018/6/15
+     */
     @Bean
-    public MessageConverter jsonMessageConverter(ObjectMapper objectMapper) {
-        return new Jackson2JsonMessageConverter(objectMapper);
+    @LoadBalanced
+    public RestTemplate getRestTemplate() {
+        return new RestTemplate();
     }
-
-
 }

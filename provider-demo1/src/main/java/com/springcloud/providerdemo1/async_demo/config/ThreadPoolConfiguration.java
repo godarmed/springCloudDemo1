@@ -6,7 +6,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.AsyncTaskExecutor;
+import org.springframework.core.task.TaskDecorator;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
 import java.lang.reflect.Method;
 import java.util.concurrent.Executor;
@@ -44,11 +48,11 @@ public class ThreadPoolConfiguration {
     @Value("${executor.thread-name-prefix}")
     private String threadNamePrefix;*/
 
+    private static final int MAX_POOL_SIZE = 10;
 
-    private static final int MAX_POOL_SIZE = 50;
+    private static final int CORE_POOL_SIZE = 5;
 
-    private static final int CORE_POOL_SIZE = 20;
-
+    //线程池配置
     @Bean("taskExecutor")
     public AsyncTaskExecutor taskExecutor() {
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
@@ -56,12 +60,32 @@ public class ThreadPoolConfiguration {
         taskExecutor.setCorePoolSize(CORE_POOL_SIZE);
         taskExecutor.setQueueCapacity(200);
         taskExecutor.setKeepAliveSeconds(60);
+        taskExecutor.setAllowCoreThreadTimeOut(true);
         taskExecutor.setThreadNamePrefix("async-task-thread-pool");
+        taskExecutor.setTaskDecorator(new ContextDecorator());
         taskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         taskExecutor.initialize();
         return taskExecutor;
     }
 
+    //线程上下文传递配置
+    class ContextDecorator implements TaskDecorator{
+        @Override
+        public Runnable decorate(Runnable runnable) {
+            RequestAttributes context = RequestContextHolder.currentRequestAttributes();
+            return () -> {
+                try{
+                    //执行异步任务前添加上下文
+                    RequestContextHolder.setRequestAttributes(context);
+                    //执行异步任务
+                    runnable.run();
+                }finally{
+                    //执行异步任务后重置上下文
+                    RequestContextHolder.resetRequestAttributes();
+                }
+            };
+        }
+    }
 
     /*@Bean
     public Executor MessageExecutor() {
