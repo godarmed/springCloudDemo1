@@ -1,6 +1,7 @@
 package com.springcloud.providerdemo1.async_demo.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.omg.CORBA.CurrentHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -9,6 +10,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Future;
@@ -45,6 +47,74 @@ public class AsyncTest {
             log.info("完成任务[{}]，耗时:[{}]毫秒",taskName,(end - start));
         }catch (Exception e){
             log.error("出现错误[{}]",e.getStackTrace());
+        }finally{
+            latch.countDown();
+        }
+    }
+
+
+    @Async("taskExecutor")
+    public void readWriteLockTest(ReadWriteLock readWriteLock,String key,String value,CountDownLatch latch){
+         try{
+            log.info("开始做任务[{}]",Thread.currentThread().getName());
+            long start = System.currentTimeMillis();
+
+            //读取Map,如果没有该Key则写入
+            if(readWriteLock.readMap(key) == null){
+                readWriteLock.writeMap(key,value);
+                log.info("当前线程[{}],key[{}]不存在",Thread.currentThread().getName(),key);
+            }else{
+                log.info("当前线程[{}],key[{}]存在",Thread.currentThread().getName(),key);
+            }
+            log.info("当前线程[{}],map[{}],",Thread.currentThread().getName(),readWriteLock.getMap().toString());
+            long end = System.currentTimeMillis();
+            log.info("完成任务[{}]，耗时:[{}]毫秒",Thread.currentThread().getName(),(end - start));
+         }catch (Exception e){
+            log.error("出现错误[{}]",e.getStackTrace());
+         }finally{
+            latch.countDown();
+        }
+    }
+
+    @Async("taskExecutor")
+    public void currentHashMapTest(Map map,String key,String value,CountDownLatch latch){
+        try{
+            log.info("开始做任务[{}]",Thread.currentThread().getName());
+            long start = System.currentTimeMillis();
+
+            //读取Map,如果没有该Key则写入
+            if(!map.containsKey(key)){
+                map.put(key,value);
+                log.info("当前线程[{}],key[{}]不存在",Thread.currentThread().getName(),key);
+            }else{
+                log.info("当前线程[{}],key[{}]存在",Thread.currentThread().getName(),key);
+            }
+            log.info("当前线程[{}],map[{}],",Thread.currentThread().getName(),map.toString());
+            long end = System.currentTimeMillis();
+            log.info("完成任务[{}]，耗时:[{}]毫秒",Thread.currentThread().getName(),(end - start));
+        }catch (Exception e) {
+            log.error("出现错误[{}]",e.getStackTrace());
+        }finally{
+            latch.countDown();
+        }
+    }
+
+    @Async("taskExecutor")
+    public void synchronizedTest(Map map,String key,String value,CountDownLatch latch){
+        try{
+            log.info("开始做任务[{}]",Thread.currentThread().getName());
+            long start = System.currentTimeMillis();
+
+            //读取Map,如果没有该Key则写入
+            if(!map.containsKey(key)){
+                map.put(key,value);
+                log.info("当前线程[{}],key[{}]不存在",Thread.currentThread().getName(),key);
+            }else{
+                log.info("当前线程[{}],key[{}]存在",Thread.currentThread().getName(),key);
+            }
+            log.info("当前线程[{}],map[{}],",Thread.currentThread().getName(),map.toString());
+            long end = System.currentTimeMillis();
+            log.info("完成任务[{}]，耗时:[{}]毫秒",Thread.currentThread().getName(),(end - start));
         }finally{
             latch.countDown();
         }

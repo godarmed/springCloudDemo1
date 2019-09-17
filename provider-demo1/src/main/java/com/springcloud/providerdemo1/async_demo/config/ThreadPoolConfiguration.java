@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.core.task.TaskDecorator;
+import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.context.request.RequestAttributes;
@@ -17,7 +18,8 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
 
 @Configuration
-public class ThreadPoolConfiguration {
+@Slf4j
+public class ThreadPoolConfiguration implements AsyncConfigurer{
     /**
      * 核心线程数：线程池创建时候初始化的线程数
      *//*
@@ -42,30 +44,42 @@ public class ThreadPoolConfiguration {
     @Value("${executor.keepalive-Seconds}")
     private int keepAliveSeconds;
 
-    *//**
+    */
+    /**
      * 线程池名的前缀：设置好了之后可以方便我们定位处理任务所在的线程池
      *//*
     @Value("${executor.thread-name-prefix}")
     private String threadNamePrefix;*/
 
-    private static final int MAX_POOL_SIZE = 10;
-
-    private static final int CORE_POOL_SIZE = 5;
-
     //线程池配置
     @Bean("taskExecutor")
-    public AsyncTaskExecutor taskExecutor() {
+    @Override
+    public Executor getAsyncExecutor() {
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
-        taskExecutor.setMaxPoolSize(MAX_POOL_SIZE);
-        taskExecutor.setCorePoolSize(CORE_POOL_SIZE);
+        taskExecutor.setMaxPoolSize(10);
+        taskExecutor.setCorePoolSize(5);
         taskExecutor.setQueueCapacity(200);
         taskExecutor.setKeepAliveSeconds(60);
         taskExecutor.setAllowCoreThreadTimeOut(true);
-        taskExecutor.setThreadNamePrefix("async-task-thread-pool");
+        taskExecutor.setThreadNamePrefix("线程池L-");
         taskExecutor.setTaskDecorator(new ContextDecorator());
         taskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         taskExecutor.initialize();
         return taskExecutor;
+    }
+
+    //异常处理配置（对于无返回值的方法）
+    @Override
+    public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
+        return new SpringAsyncExceptionHandler();
+    }
+
+    //自定义异常处理类
+    class SpringAsyncExceptionHandler implements AsyncUncaughtExceptionHandler {
+        @Override
+        public void handleUncaughtException(Throwable throwable, Method method, Object... obj) {
+            log.error("Exception occurs in async method", throwable.getMessage());
+        }
     }
 
     //线程上下文传递配置
@@ -81,7 +95,7 @@ public class ThreadPoolConfiguration {
                     runnable.run();
                 }finally{
                     //执行异步任务后重置上下文
-                    RequestContextHolder.resetRequestAttributes();
+                    //RequestContextHolder.resetRequestAttributes();
                 }
             };
         }
