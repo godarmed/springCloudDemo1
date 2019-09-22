@@ -8,7 +8,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://server1:8781/eureka/
+      defaultZone: http://server1:8781/eureka/,http://server2:8782/eureka/
 
 #hystrix的超时时间
 hystrix:
@@ -19,9 +19,9 @@ hystrix:
           enabled: true
         isolation:
           thread:
-            timeoutInMilliseconds: 9000
+            timeoutInMilliseconds: 27000
 #ribbon的超时时间
 ribbon:
-  ReadTimeout: 3000
-  ConnectTimeout: 3000
+  ReadTimeout: 9000
+  ConnectTimeout: 9000
 

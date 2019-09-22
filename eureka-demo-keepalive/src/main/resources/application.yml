@@ -13,7 +13,7 @@ eureka:
   #客户端
   client:
     #是否开启注册服务，因为这里如果为true表示自己注册自己，而自己就是一个服务注册方，没必要自己注册自己
-    #register-with-eureka: false
+    #register-with-eureka: true
     #是否拉取服务列表，这里我只提供服务给别的服务。
     #fetch-registry: false
     #设置EurekaServer的地址,将自身注册到Server2
