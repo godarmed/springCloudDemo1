@@ -20,7 +20,7 @@ public interface FeignTestInterface {
     @RequestMapping(value = "/getFile",method = {RequestMethod.POST})
     public MultipartFile getFile();
 
-    @RequestMapping(value = "/uploadFile",method = {RequestMethod.POST},consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @RequestMapping(value = "/uploadFile",method = {RequestMethod.POST},produces = {MediaType.APPLICATION_JSON_UTF8_VALUE},consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String uploadFile(@RequestPart(value="file") MultipartFile file);
 
 }

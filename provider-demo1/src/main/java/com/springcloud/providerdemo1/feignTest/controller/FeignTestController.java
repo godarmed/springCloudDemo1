@@ -51,6 +51,12 @@ public class FeignTestController {
     @RequestMapping(value = "/uploadFile",method = {RequestMethod.POST},consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String uploadFile(@RequestPart(value="file") MultipartFile file){
         //返回文件名
+        try {
+            file.getInputStream();
+            log.info("文件名为[{}]",file.getOriginalFilename());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return file.getName();
     }
 

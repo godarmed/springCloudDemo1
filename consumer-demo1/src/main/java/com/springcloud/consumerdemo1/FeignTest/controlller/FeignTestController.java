@@ -5,12 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -21,7 +23,7 @@ import java.io.IOException;
  * @author:
  * @create: 2018-06-15 15:55
  **/
-@Controller
+@RestController
 @Slf4j
 public class FeignTestController{
     @Autowired
@@ -60,7 +62,7 @@ public class FeignTestController{
         //文件转化
         MultipartFile targetFile = null;
         try {
-            targetFile = new MockMultipartFile(sourceFile.getName(), new FileInputStream(sourceFile));
+            targetFile = new MockMultipartFile("file",sourceFile.getName(), MediaType.MULTIPART_FORM_DATA_VALUE, new FileInputStream(sourceFile));
         } catch (IOException e) {
             e.printStackTrace();
         }

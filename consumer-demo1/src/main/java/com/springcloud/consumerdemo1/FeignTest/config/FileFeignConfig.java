@@ -25,21 +25,21 @@ import static java.util.Collections.singletonMap;
 @Configuration
 public class FileFeignConfig {
 
-    class FeignSpringFormEncoder extends FormEncoder {
+    /*class FeignSpringFormEncoder extends FormEncoder {
 
-        /**
+        *//**
          * Constructor with the default Feign's encoder as a delegate.
-         */
+         *//*
         public FeignSpringFormEncoder() {
             this(new Encoder.Default());
         }
 
 
-        /**
+        *//**
          * Constructor with specified delegate encoder.
          *
          * @param delegate delegate encoder, if this encoder couldn't encode object.
-         */
+         *//*
         public FeignSpringFormEncoder(Encoder delegate) {
             super(delegate);
 
@@ -66,12 +66,13 @@ public class FileFeignConfig {
             }
             super.encode(object, bodyType, template);
         }
-    }
+    }*/
 
     @Bean
     @Primary
     @Scope("prototype")
     public Encoder multipartFormEncoder(ObjectFactory<HttpMessageConverters> messageConverters) {
-        return new FeignSpringFormEncoder(new SpringEncoder(messageConverters));
+        //return new FeignSpringFormEncoder(new SpringEncoder(messageConverters));
+        return new SpringEncoder(messageConverters);
     }
 }
