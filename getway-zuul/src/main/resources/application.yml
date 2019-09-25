@@ -1,0 +1,22 @@
+server:
+  port: 8000
+
+spring:
+  application:
+    name: provider
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://server1:8781/eureka/,http://server2:8782/eureka/
+
+#由于zuul中的actuator默认的安全权限为ture，需改为false，若不修改则会导致无法访问路由管理（localhost:8000/routes）
+#2.x版本写法
+management:
+  endpoint:
+    env:
+      enabled: true
+#1.x版本写法
+#management:
+#  security:
+#    enabled: false

@@ -1,21 +1,21 @@
 package com.springcloud.consumerdemo1.FeignTest.controlller;
 
 import com.springcloud.consumerdemo1.FeignTest.leo_interface.FeignTestInterface;
+import com.springcloud.global.entity.ResultModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @program: springcloud-example
@@ -25,7 +25,7 @@ import java.io.IOException;
  **/
 @RestController
 @Slf4j
-public class FeignTestController{
+public class FeignConsumerController{
     @Autowired
     private LoadBalancerClient loadBalancerClient;
 
@@ -48,7 +48,8 @@ public class FeignTestController{
         log.info("文件名为:[{}]",multipartFile.getName());
         return multipartFile;
     }
-    private final static String fileName = "C:/Users/zzy/Desktop/20190901曾志远周报.pdf";
+
+    private final static String fileName = "C:\\Users\\Administrator\\Desktop\\图片样例\\192X192.png";
 
     //远程文件上传
     @RequestMapping("/uploadFile")
@@ -68,6 +69,14 @@ public class FeignTestController{
         }
         //上传文件
         return feignTestInterface.uploadFile(targetFile);
+    }
+
+
+    //远程多文件上传
+    @RequestMapping(value = "/uploadFiles")
+    public ResultModel<List<String>> uploadFiles(@RequestParam("file") MultipartFile[] files) {
+        //上传文件
+        return feignTestInterface.uploadFiles(files);
     }
 
     @GetMapping("/task")

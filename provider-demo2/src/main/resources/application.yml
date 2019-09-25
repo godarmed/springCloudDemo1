@@ -1,13 +1,13 @@
 #端口号
 server:
-  port: 8090
+  port: 8784
 #Eureka实例名，集群中根据这里相互识别
 spring:
   application:
-    name: provider2
+    name: provider
   rabbitmq:
     host: 149.129.118.215
-    port: 5673
+    port: 5672
     username: admin
     password: Zzy123456
     publisher-confirms: true
@@ -18,7 +18,7 @@ eureka:
   client:
     #注册中心地址
     service-url:
-      defaultZone: http://localhost:8888/eureka/
+      defaultZone: http://server1:8781/eureka/,http://server2:8782/eureka/
 
 
 

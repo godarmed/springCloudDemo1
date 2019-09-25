@@ -77,6 +77,11 @@
             <artifactId>easyexcel</artifactId>
             <version>1.1.2-beta4</version>
         </dependency>
+        <dependency>
+            <groupId>com.springcloud</groupId>
+            <artifactId>global</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -90,6 +95,25 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <!--配置文件设置-->
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <profileActive>dev</profileActive>
+            </properties>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <profileActive>test</profileActive>
+            </properties>
+        </profile>
+    </profiles>
 
     <build>
         <plugins>

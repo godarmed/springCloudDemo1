@@ -3,8 +3,6 @@ server:
 spring:
   application:
     name: consumer-8190
-
-
 eureka:
   client:
     service-url:
@@ -24,4 +22,11 @@ hystrix:
 ribbon:
   ReadTimeout: 9000
   ConnectTimeout: 9000
+
+#feign的熔断机制
+feign:
+  hystrix:
+    enabled: true
+
+
 

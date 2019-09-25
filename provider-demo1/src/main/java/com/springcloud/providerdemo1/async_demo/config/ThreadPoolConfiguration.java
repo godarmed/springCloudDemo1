@@ -20,6 +20,10 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Configuration
 @Slf4j
 public class ThreadPoolConfiguration implements AsyncConfigurer{
+    public static void main(String[] args) {
+        String source = "{\"fileId\":\"a2a123645561432583ec184aafc90261\"}";
+        System.out.println(source.substring(source.indexOf(":")+2,source.lastIndexOf("}")-1));
+    }
     /**
      * 核心线程数：线程池创建时候初始化的线程数
      *//*

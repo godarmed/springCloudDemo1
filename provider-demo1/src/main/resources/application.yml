@@ -3,6 +3,11 @@ server:
 spring:
   application:
     name: provider-8783
+  mvc:
+    static-path-pattern: /**
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:D:/temp/imgs/
+
   rabbitmq:
     host: 149.129.118.215
     port: 5672
@@ -13,3 +18,5 @@ eureka:
   client:
     service-url:
       defaultZone: http://server1:8781/eureka/,http://server2:8782/eureka/
+img:
+  resource-path: D:/temp/imgs/
