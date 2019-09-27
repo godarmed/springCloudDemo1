@@ -2,20 +2,21 @@ package com.springcloud.providerdemo1.feignTest.controller;
 
 import com.springcloud.global.entity.ResultModel;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.commons.codec.binary.Hex;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
-import java.math.BigInteger;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * @program: springcloud-example
@@ -134,7 +135,7 @@ public class FeignProviderController {
         }
         MessageDigest digest = null;
         FileInputStream in = null;
-        byte buffer[] = new byte[1024];
+        byte buffer[] = new byte[4096];
         int len;
         try {
             digest = MessageDigest.getInstance("MD5");
@@ -146,12 +147,19 @@ public class FeignProviderController {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }finally {
+            if(in!=null){
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-        BigInteger bigInt = new BigInteger(1, digest.digest());
-        return bigInt.toString(16);
+        return new String(Hex.encodeHex(digest.digest()));
     }
 
-    //获取文件的MD5值
+    //获取byte[]的MD5值
     public static String getFileMD5(byte[] bytes) {
         if (bytes==null) {
             return null;
@@ -162,9 +170,9 @@ public class FeignProviderController {
             digest.update(bytes);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
+            return null;
         }
-        BigInteger bigInt = new BigInteger(1, digest.digest());
-        return bigInt.toString(16);
+        return new String(Hex.encodeHex(digest.digest()));
     }
 
     public static void main(String[] args) throws IOException {
