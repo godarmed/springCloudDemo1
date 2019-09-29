@@ -20,6 +20,9 @@ public interface FeignTestInterface {
     @RequestMapping("/task")
     public String taskExecute();
 
+    @RequestMapping("/timeTask")
+    public String timeTaskExecute(@RequestBody Integer taskTime);
+
     @RequestMapping(value = "/getFile",method = {RequestMethod.POST})
     public MultipartFile getFile();
 

@@ -84,6 +84,11 @@ public class FeignConsumerController{
         return feignTestInterface.taskExecute();
     }
 
+    @GetMapping("/timeTask")
+    public String timeTaskExecute(Integer taskTime) {
+        return feignTestInterface.timeTaskExecute(taskTime);
+    }
+
     @GetMapping("/loadInstance")
     public String loadInstance() {
         ServiceInstance choose = this.loadBalancerClient.choose("provider-8783");

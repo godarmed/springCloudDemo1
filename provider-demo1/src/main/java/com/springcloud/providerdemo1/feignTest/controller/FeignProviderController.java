@@ -34,11 +34,11 @@ public class FeignProviderController {
 
     @GetMapping("/getUser")
     public String getUser() {
-        System.out.println("获取用户成功"+1/0);
+        System.out.println("获取用户成功");
         return "{\"username\":\"张三\",\"age\":\"10\"}";
     }
 
-    private final static String fileName = "C:\\Users\\Administrator\\Desktop\\图片样例\\192X192.png";
+    private final static String fileName = "C:\\Users\\Administrator\\Desktop\\服务号开发相关\\图片样例\\1440,蓝.png";
 
     @RequestMapping(value="/getFile",method = {RequestMethod.POST})
     public MultipartFile getFile(){

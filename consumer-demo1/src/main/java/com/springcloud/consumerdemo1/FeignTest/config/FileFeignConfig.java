@@ -11,6 +11,7 @@ import feign.form.spring.SpringManyMultipartFilesWriter;
 import feign.form.spring.SpringSingleMultipartFileWriter;
 import lombok.val;
 import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.cloud.openfeign.support.SpringEncoder;
 import org.springframework.context.annotation.Bean;
@@ -28,6 +29,16 @@ import static java.util.Collections.singletonMap;
 
 @Configuration
 public class FileFeignConfig {
+    @Autowired
+    private ObjectFactory<HttpMessageConverters> messageConverters;
+
+    @Bean
+    @Primary
+    @Scope("prototype")
+    public Encoder multipartFormEncoder(ObjectFactory<HttpMessageConverters> messageConverters) {
+        return new FeignSpringFormEncoder(new SpringEncoder(messageConverters));
+        //return new FeignSpringFormEncoder();
+    }
 
     class FeignSpringFormEncoder extends FormEncoder {
         /**
@@ -69,13 +80,5 @@ public class FileFeignConfig {
             }
             super.encode(object, bodyType, template);
         }
-    }
-
-    @Bean
-    @Primary
-    @Scope("prototype")
-    public Encoder multipartFormEncoder(ObjectFactory<HttpMessageConverters> messageConverters) {
-        //return new FeignSpringFormEncoder(new SpringEncoder(messageConverters));
-        return new FeignSpringFormEncoder();
     }
 }

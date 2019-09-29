@@ -99,7 +99,7 @@ public class ThreadPoolConfiguration implements AsyncConfigurer{
                     runnable.run();
                 }finally{
                     //执行异步任务后重置上下文
-                    //RequestContextHolder.resetRequestAttributes();
+                    RequestContextHolder.resetRequestAttributes();
                 }
             };
         }
