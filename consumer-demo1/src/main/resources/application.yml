@@ -9,24 +9,24 @@ eureka:
       defaultZone: http://server1:8781/eureka/,http://server2:8782/eureka/
 
 #hystrix的超时时间
-#hystrix:
-#  command:
-#    default:
-#      execution:
-#        timeout:
-#          enabled: true
-#        isolation:
-#          thread:
-#            timeoutInMilliseconds: 4000
-##ribbon的超时时间
-#ribbon:
-#  OkToRetryOnAllOperations: false #对所有操作请求都进行重试,默认false
-#  ReadTimeout: 2000   #负载均衡超时时间，默认值5000
-#  ConnectTimeout: 1000 #ribbon请求连接的超时时间，默认值2000
-#  MaxAutoRetries: 0     #对当前实例的重试次数，默认0
-#  MaxAutoRetriesNextServer: 1 #对切换实例的重试次数，默认1
-#  eureka:
-#      enabled: true
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 18000
+#ribbon的超时时间
+ribbon:
+  OkToRetryOnAllOperations: false #对所有操作请求都进行重试,默认false
+  ReadTimeout: 9000   #负载均衡超时时间，默认值5000
+  ConnectTimeout: 9000 #ribbon请求连接的超时时间，默认值2000
+  MaxAutoRetries: 0     #对当前实例的重试次数，默认0
+  MaxAutoRetriesNextServer: 1 #对切换实例的重试次数，默认1
+  eureka:
+      enabled: true
 
 #feign的熔断机制
 feign:

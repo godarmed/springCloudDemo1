@@ -1,14 +1,19 @@
 package com.springcloud.consumerdemo1.FeignTest.config;
 
+import com.springcloud.consumerdemo1.FeignTest.feignWrapper.config.DefaultErrorDecoder;
+import com.springcloud.consumerdemo1.FeignTest.feignWrapper.fallbacks.FeignHystrixFactory;
+import com.springcloud.consumerdemo1.FeignTest.feignWrapper.fallbacks.IHystrix;
 import feign.RequestTemplate;
 import feign.codec.EncodeException;
 import feign.codec.Encoder;
+import feign.codec.ErrorDecoder;
 import feign.form.ContentType;
 import feign.form.FormEncoder;
 import feign.form.MultipartFormContentProcessor;
 import feign.form.spring.SpringFormEncoder;
 import feign.form.spring.SpringManyMultipartFilesWriter;
 import feign.form.spring.SpringSingleMultipartFileWriter;
+import feign.hystrix.FallbackFactory;
 import lombok.val;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +33,23 @@ import static feign.form.ContentType.MULTIPART;
 import static java.util.Collections.singletonMap;
 
 @Configuration
-public class FileFeignConfig {
+public class FeignConfig {
     @Autowired
     private ObjectFactory<HttpMessageConverters> messageConverters;
 
+    //远程调用异常解码器
+    @Bean
+    public ErrorDecoder errorDecoder(){
+        return new DefaultErrorDecoder();
+    }
+
+    //异常处理工厂
+    @Bean
+    public FallbackFactory fallbackFactory(){
+        return new FeignHystrixFactory<IHystrix>(IHystrix.class);
+    }
+
+    //文件上传解码器
     @Bean
     @Primary
     @Scope("prototype")

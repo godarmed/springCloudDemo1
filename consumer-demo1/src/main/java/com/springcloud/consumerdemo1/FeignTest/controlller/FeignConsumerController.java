@@ -1,6 +1,7 @@
 package com.springcloud.consumerdemo1.FeignTest.controlller;
 
-import com.springcloud.consumerdemo1.FeignTest.leo_interface.FeignTestInterface;
+import com.springcloud.consumerdemo1.FeignTest.FeignTestInterface;
+import com.springcloud.global.entity.DTO.StudentDTO;
 import com.springcloud.global.entity.ResultModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,13 @@ public class FeignConsumerController{
     public String getUser() {
         return feignTestInterface.getUser();
     }
+
+    @RequestMapping("/setUser")
+    @ResponseBody
+    public String setUser(@RequestBody StudentDTO studentDTO) {
+        return feignTestInterface.setUser(studentDTO);
+    }
+
 
     //远程文件下载
     @RequestMapping("/getFile")

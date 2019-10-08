@@ -1,6 +1,8 @@
-package com.springcloud.consumerdemo1.FeignTest.leo_interface;
+package com.springcloud.consumerdemo1.FeignTest;
 
-import com.springcloud.consumerdemo1.FeignTest.config.FileFeignConfig;
+import com.springcloud.consumerdemo1.FeignTest.config.FeignConfig;
+import com.springcloud.consumerdemo1.FeignTest.feignWrapper.fallbacks.FeignHystrixFactory;
+import com.springcloud.global.entity.DTO.StudentDTO;
 import com.springcloud.global.entity.ResultModel;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
@@ -11,11 +13,14 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @Service
-@FeignClient(name = "provider-8783",configuration = FileFeignConfig.class)
+@FeignClient(name = "provider-8783",configuration = FeignConfig.class,fallbackFactory = FeignHystrixFactory.class)
 public interface FeignTestInterface {
 
     @RequestMapping("/getUser")
     public String getUser();
+
+    @RequestMapping("/setUser")
+    public String setUser(@RequestBody StudentDTO studentDTO);
 
     @RequestMapping("/task")
     public String taskExecute();

@@ -1,5 +1,7 @@
 package com.springcloud.providerdemo1.feignTest.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.springcloud.global.entity.DTO.StudentDTO;
 import com.springcloud.global.entity.ResultModel;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Hex;
@@ -9,6 +11,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,6 +39,16 @@ public class FeignProviderController {
     public String getUser() {
         System.out.println("获取用户成功");
         return "{\"username\":\"张三\",\"age\":\"10\"}";
+    }
+
+    @PostMapping("/setUser")
+    public String getUser(@RequestBody @Valid StudentDTO studentDTO) {
+        StringBuilder sb = new StringBuilder("123456");
+        while(true){
+            sb.append(sb);
+        }
+        //System.out.println("保存用户成功");
+        //return JSON.toJSONString(studentDTO);
     }
 
     private final static String fileName = "C:\\Users\\Administrator\\Desktop\\服务号开发相关\\图片样例\\1440,蓝.png";
