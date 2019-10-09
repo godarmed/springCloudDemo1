@@ -1,8 +1,11 @@
 package com.springcloud.consumerdemo1.FeignTest.config;
 
+import com.springcloud.consumerdemo1.FeignTest.ClientFallbackFeign;
 import com.springcloud.consumerdemo1.FeignTest.feignWrapper.config.DefaultErrorDecoder;
+import com.springcloud.consumerdemo1.FeignTest.feignWrapper.config.DefaultMultipartFileEncoder;
 import com.springcloud.consumerdemo1.FeignTest.feignWrapper.fallbacks.FeignHystrixFactory;
 import com.springcloud.consumerdemo1.FeignTest.feignWrapper.fallbacks.IHystrix;
+import com.springcloud.consumerdemo1.FeignTest.hystrix.ClientFallbackFeignHystrix;
 import feign.RequestTemplate;
 import feign.codec.EncodeException;
 import feign.codec.Encoder;
@@ -37,66 +40,24 @@ public class FeignConfig {
     @Autowired
     private ObjectFactory<HttpMessageConverters> messageConverters;
 
-    //远程调用异常解码器
+    //远程Feign调用异常解码器
     @Bean
     public ErrorDecoder errorDecoder(){
         return new DefaultErrorDecoder();
     }
 
-    //异常处理工厂
+    //自定义异常处理工厂类
     @Bean
     public FallbackFactory fallbackFactory(){
-        return new FeignHystrixFactory<IHystrix>(IHystrix.class);
+        return new FeignHystrixFactory(ClientFallbackFeign.class);
     }
 
-    //文件上传解码器
+    //文件上传编码器
     @Bean
-    @Primary
     @Scope("prototype")
-    public Encoder multipartFormEncoder(ObjectFactory<HttpMessageConverters> messageConverters) {
-        return new FeignSpringFormEncoder(new SpringEncoder(messageConverters));
-        //return new FeignSpringFormEncoder();
+    public Encoder encoder(ObjectFactory<HttpMessageConverters> messageConverters) {
+        return new DefaultMultipartFileEncoder(new SpringEncoder(messageConverters));
     }
 
-    class FeignSpringFormEncoder extends FormEncoder {
-        /**
-         * Constructor with the default Feign's encoder as a delegate.
-         */
-        public FeignSpringFormEncoder() {
-            this(new Default());
-        }
-
-
-        /**
-         * Constructor with specified delegate encoder.
-         *
-         * @param delegate delegate encoder, if this encoder couldn't encode object.
-         */
-        public FeignSpringFormEncoder(Encoder delegate) {
-            super(delegate);
-
-            MultipartFormContentProcessor processor = (MultipartFormContentProcessor) getContentProcessor(ContentType.MULTIPART);
-            processor.addWriter(new SpringSingleMultipartFileWriter());
-            processor.addWriter(new SpringManyMultipartFilesWriter());
-        }
-
-
-        @Override
-        public void encode(Object object, Type bodyType, RequestTemplate template) throws EncodeException {
-            if (bodyType.equals(MultipartFile.class)) {
-                MultipartFile file = (MultipartFile) object;
-                Map data = Collections.singletonMap(file.getName(), object);
-                super.encode(data, MAP_STRING_WILDCARD, template);
-                return;
-            } else if (bodyType.equals(MultipartFile[].class)) {
-                MultipartFile[] file = (MultipartFile[]) object;
-                if(file != null) {
-                    Map data = Collections.singletonMap(file.length == 0 ? "" : file[0].getName(), object);
-                    super.encode(data, MAP_STRING_WILDCARD, template);
-                    return;
-                }
-            }
-            super.encode(object, bodyType, template);
-        }
-    }
+    //自定义全局异常处理
 }

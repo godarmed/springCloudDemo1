@@ -1,10 +1,13 @@
 package com.springcloud.consumerdemo1.FeignTest.hystrix;
 
-import com.springcloud.consumerdemo1.FeignTest.FeignTestInterface;
+import com.springcloud.consumerdemo1.FeignTest.ClientFallbackFeign;
+import com.springcloud.consumerdemo1.FeignTest.feignWrapper.exception.HystrixException;
+import com.springcloud.consumerdemo1.FeignTest.feignWrapper.fallbacks.IHystrix;
 import com.springcloud.global.entity.DTO.StudentDTO;
 import com.springcloud.global.entity.ResultModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -19,11 +22,20 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class FeignClientFallback implements FeignTestInterface{
+public class ClientFallbackFeignHystrix implements ClientFallbackFeign,IHystrix{
+    private Throwable throwable;
+
+    @Override
+    public Throwable setThrowable(Throwable throwable) {
+        this.throwable = throwable;
+        return null;
+    }
+
     @Override
     public String getUser() {
         log.info("getUser方法调用失败!");
-        return "getUser方法调用失败!";
+        throw new HystrixException(500,throwable.getMessage());
+        //return "getUser方法调用失败!";
     }
 
     @Override
@@ -35,7 +47,8 @@ public class FeignClientFallback implements FeignTestInterface{
     @Override
     public String setUser(StudentDTO studentDTO) {
         log.info("setUser方法调用失败!");
-        return "setUser方法调用失败!";
+        throw new HystrixException(500,throwable.getMessage());
+        //return "setUser方法调用失败!";
     }
 
     @Override
@@ -49,12 +62,9 @@ public class FeignClientFallback implements FeignTestInterface{
     }
 
     @Override
-    public String uploadFile(MultipartFile file) {
-        return null;
+    public ResultModel<List<String>>  uploadFiles(String id, String token, List<MultipartFile> file) {
+        throw new HystrixException(500,throwable.getMessage());
+        //return null;
     }
 
-    @Override
-    public ResultModel<List<String>> uploadFiles(MultipartFile[] files) {
-        return null;
-    }
 }

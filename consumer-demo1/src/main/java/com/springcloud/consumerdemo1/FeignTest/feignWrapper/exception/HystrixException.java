@@ -3,6 +3,9 @@ package com.springcloud.consumerdemo1.FeignTest.feignWrapper.exception;
 import com.netflix.hystrix.exception.HystrixBadRequestException;
 import com.springcloud.global.exception.error.IException;
 
+/**
+ * 自定义不进入熔断的异常类
+ */
 public class HystrixException extends HystrixBadRequestException implements IException{
     private static final long serialVersionUID = 1L;
     private Integer code = 500;

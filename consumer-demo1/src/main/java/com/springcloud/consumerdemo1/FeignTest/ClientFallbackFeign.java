@@ -4,6 +4,7 @@ import com.springcloud.consumerdemo1.FeignTest.config.FeignConfig;
 import com.springcloud.consumerdemo1.FeignTest.feignWrapper.fallbacks.FeignHystrixFactory;
 import com.springcloud.global.entity.DTO.StudentDTO;
 import com.springcloud.global.entity.ResultModel;
+import feign.Param;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ import java.util.List;
 
 @Service
 @FeignClient(name = "provider-8783",configuration = FeignConfig.class,fallbackFactory = FeignHystrixFactory.class)
-public interface FeignTestInterface {
+public interface ClientFallbackFeign {
 
     @RequestMapping("/getUser")
     public String getUser();
@@ -32,9 +33,6 @@ public interface FeignTestInterface {
     public MultipartFile getFile();
 
     @RequestMapping(value = "/uploadFile",method = {RequestMethod.POST},produces = {MediaType.APPLICATION_JSON_UTF8_VALUE},consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public String uploadFile(@RequestPart(value="file") MultipartFile file);
-
-    @RequestMapping(value = "/uploadFiles",method = {RequestMethod.POST},produces = {MediaType.APPLICATION_JSON_UTF8_VALUE},consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResultModel<List<String>> uploadFiles(@RequestPart(value="file") MultipartFile[] files);
+    public ResultModel<List<String>> uploadFiles(@RequestParam("id") String id,@RequestParam("token") String token,@RequestPart(value="file") List<MultipartFile> files);
 
 }

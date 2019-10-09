@@ -42,13 +42,9 @@ public class FeignProviderController {
     }
 
     @PostMapping("/setUser")
-    public String getUser(@RequestBody @Valid StudentDTO studentDTO) {
-        StringBuilder sb = new StringBuilder("123456");
-        while(true){
-            sb.append(sb);
-        }
-        //System.out.println("保存用户成功");
-        //return JSON.toJSONString(studentDTO);
+    public String getUser(@RequestBody @Valid StudentDTO studentDTO) throws InterruptedException {
+        System.out.println("保存用户成功");
+        return JSON.toJSONString(studentDTO);
     }
 
     private final static String fileName = "C:\\Users\\Administrator\\Desktop\\服务号开发相关\\图片样例\\1440,蓝.png";
@@ -73,34 +69,24 @@ public class FeignProviderController {
     }
 
     @RequestMapping(value = "/uploadFile")
-    public String uploadFile(@RequestPart(value="file") MultipartFile file){
-        //返回文件名
-        try {
-            file.getInputStream();
-            log.info("文件名为[{}]",file.getOriginalFilename());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return file.getOriginalFilename();
-    }
-
-    @RequestMapping(value = "/uploadFiles")
-    public ResultModel<List<String>> uploadFiles(@RequestPart(value="file") MultipartFile[] files){
+    public ResultModel<List<String>> uploadFiles(@RequestParam("id") String id,@RequestParam("token") String token,@RequestPart(value="file") List<MultipartFile> files){
+        log.info("上传者id为[{}]",JSON.toJSONString(id));
+        log.info("上传者token为[{}]",JSON.toJSONString(token));
         //保存文件
-        saveMultiPartFiles(files);
+        List<File> targetFiles =  saveMultiPartFiles(files);
         //返回文件名数组
         ResultModel<List<String>> resultModel = new ResultModel<>();
         List<String> fileNames = new ArrayList<>();
-        for (MultipartFile file : files) {
-            log.info("文件名为[{}]",file.getOriginalFilename());
-            fileNames.add(file.getOriginalFilename());
+        for (File file : targetFiles) {
+            log.info("文件名为[{}]",file.getName());
+            fileNames.add(file.getName());
         }
         resultModel.setData(fileNames);
         return resultModel;
     }
 
 
-    private List<File> saveMultiPartFiles(MultipartFile... multipartFile){
+    private List<File> saveMultiPartFiles(List<MultipartFile> multipartFile){
         List<File> files = new ArrayList<>();
         for (MultipartFile file : multipartFile) {
             files.add(multipartFile2File(file,true));
