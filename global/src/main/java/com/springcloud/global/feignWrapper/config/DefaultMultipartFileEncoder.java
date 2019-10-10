@@ -1,4 +1,4 @@
-package com.springcloud.consumerdemo1.FeignTest.feignWrapper.config;
+package com.springcloud.global.feignWrapper.config;
 
 import com.springcloud.global.utils.TypeUtils;
 import feign.RequestTemplate;
@@ -25,6 +25,7 @@ import java.util.Map;
 public class DefaultMultipartFileEncoder extends FormEncoder {
     //用于获取MultipartFile的参数化类型
     private List<MultipartFile> multipartFileList;
+
     /**
      * Constructor with the default Feign's encoder as a delegate.
      */
@@ -49,15 +50,8 @@ public class DefaultMultipartFileEncoder extends FormEncoder {
 
     @Override
     public void encode(Object object, Type bodyType, RequestTemplate template) throws EncodeException {
-        log.info("接受到的参数类型[]",bodyType);
-        TypeUtils<MultipartFile> typeUtils = new TypeUtils();
-        Type multipartFileListType = typeUtils.getListType();
-        try {
-            multipartFileListType = DefaultMultipartFileEncoder.class.getDeclaredField("multipartFileList").getGenericType();
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        }
-        log.info("List参数类型[]",multipartFileListType);
+        Type multipartFileListType = TypeUtils.getListType(DefaultMultipartFileEncoder.class, "multipartFileList");
+//        log.info("List参数类型[]",multipartFileListType);
 
         if (bodyType.equals(MultipartFile.class)) {
             MultipartFile file = (MultipartFile) object;
@@ -66,14 +60,14 @@ public class DefaultMultipartFileEncoder extends FormEncoder {
             return;
         } else if (bodyType.equals(MultipartFile[].class)) {
             MultipartFile[] file = (MultipartFile[]) object;
-            if(file != null) {
+            if (file != null) {
                 Map data = Collections.singletonMap(file.length == 0 ? "" : file[0].getName(), object);
                 super.encode(data, MAP_STRING_WILDCARD, template);
                 return;
             }
-        }else if(bodyType.equals(multipartFileListType)){
+        } else if (bodyType.equals(multipartFileListType)) {
             List<MultipartFile> file = (List<MultipartFile>) object;
-            if(file != null) {
+            if (file != null) {
                 Map data = Collections.singletonMap(file.size() == 0 ? "" : file.get(0).getName(), object);
                 super.encode(data, MAP_STRING_WILDCARD, template);
                 return;

@@ -1,2 +1,6 @@
 server:
-  port: 9101
+  tomcat:
+    basedir: /root/service/temp/
+
+img:
+  resource-path: /root/service/file/

@@ -1,4 +1,4 @@
-package com.springcloud.consumerdemo1.FeignTest.feignWrapper.fallbacks;
+package com.springcloud.global.feignWrapper.fallbacks;
 
 import feign.hystrix.FallbackFactory;
 import lombok.extern.slf4j.Slf4j;

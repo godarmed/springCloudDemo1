@@ -1,11 +1,11 @@
 #端口号
 server:
-  port: 8782
+  port: 7668
 spring:
   application:
     name: spring-cloud-eureka
   profiles:
-    active: server2
+    active: "@profileActive@"
 #Eureka实例名，集群中根据这里相互识别
 eureka:
   instance:
@@ -19,7 +19,9 @@ eureka:
     #设置EurekaServer的地址,将自身注册到Server2
     #注册中心地址
     service-url:
-      defaultZone: http://server1:8781/eureka/
+      defaultZone: http://server1:7667/eureka/
 
-
+eurekaserver:
+  ip: server1
+  port: 7667
 

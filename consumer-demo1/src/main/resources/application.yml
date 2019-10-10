@@ -1,10 +1,10 @@
 server:
-  port: 8190
+  port: 7671
   tomcat:
     basedir: C:/filetTmp/img   #上传文件临时目录
 spring:
   application:
-    name: consumer-8190
+    name: consumer-7671
   servlet:
       multipart:
         max-file-size: 100MB    #允许最大文件大小
@@ -14,7 +14,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://server1:8781/eureka/,http://server2:8782/eureka/
+      defaultZone: http://server1:7667/eureka/,http://server2:7668/eureka/
 
 #hystrix的超时时间
 hystrix:

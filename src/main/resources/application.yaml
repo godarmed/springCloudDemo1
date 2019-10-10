@@ -1,0 +1,14 @@
+leomodule:
+  gateway:
+    port: 7666
+  eureka-7667:
+    port: 7667
+  eureka-7668:
+    port: 7668
+  provider-7669:
+    port: 7669
+  provider-7670:
+    port: 7670
+  consumer-7671:
+    port: 7671
+

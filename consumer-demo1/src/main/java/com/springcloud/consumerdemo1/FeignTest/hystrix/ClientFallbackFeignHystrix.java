@@ -1,13 +1,12 @@
 package com.springcloud.consumerdemo1.FeignTest.hystrix;
 
 import com.springcloud.consumerdemo1.FeignTest.ClientFallbackFeign;
-import com.springcloud.consumerdemo1.FeignTest.feignWrapper.exception.HystrixException;
-import com.springcloud.consumerdemo1.FeignTest.feignWrapper.fallbacks.IHystrix;
+import com.springcloud.global.feignWrapper.exception.HystrixException;
+import com.springcloud.global.feignWrapper.fallbacks.IHystrix;
 import com.springcloud.global.entity.DTO.StudentDTO;
 import com.springcloud.global.entity.ResultModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

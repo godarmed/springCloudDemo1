@@ -99,6 +99,17 @@ public class GlobalExceptionHandler {
         return resultModel;
     }
 
+    @ExceptionHandler({NullPointerException.class})
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ResultModel<String> nullPointerException(Exception e) {
+        log.error(e.getMessage(), e);
+        ResultModel<String> resultModel = new ResultModel();
+        resultModel.setSubCode(500);
+        resultModel.setMessage("系统提示：服务异常，请联系管理员");
+        return resultModel;
+    }
+
     @ExceptionHandler({Exception.class})
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -116,16 +127,5 @@ public class GlobalExceptionHandler {
         log.error(e.getMessage());
         e.printStackTrace();
         return error;
-    }
-
-    @ExceptionHandler({NullPointerException.class})
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public ResultModel<String> nullPointerException(Exception e) {
-        log.error(e.getMessage(), e);
-        ResultModel<String> resultModel = new ResultModel();
-        resultModel.setSubCode(500);
-        resultModel.setMessage("系统提示：服务异常，请联系管理员");
-        return resultModel;
     }
 }

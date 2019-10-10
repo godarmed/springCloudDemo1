@@ -1,5 +1,5 @@
 server:
-  port: 8783
+  port: 7669
 spring:
   application:
     name: provider-8783
@@ -17,6 +17,6 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://server1:8781/eureka/,http://server2:8782/eureka/
+      defaultZone: http://server1:7667/eureka/,http://server2:7668/eureka/
 img:
   resource-path: D:/temp/imgs/

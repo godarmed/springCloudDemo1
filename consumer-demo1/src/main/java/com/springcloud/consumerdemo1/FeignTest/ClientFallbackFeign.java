@@ -1,10 +1,9 @@
 package com.springcloud.consumerdemo1.FeignTest;
 
 import com.springcloud.consumerdemo1.FeignTest.config.FeignConfig;
-import com.springcloud.consumerdemo1.FeignTest.feignWrapper.fallbacks.FeignHystrixFactory;
+import com.springcloud.global.feignWrapper.fallbacks.FeignHystrixFactory;
 import com.springcloud.global.entity.DTO.StudentDTO;
 import com.springcloud.global.entity.ResultModel;
-import feign.Param;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;

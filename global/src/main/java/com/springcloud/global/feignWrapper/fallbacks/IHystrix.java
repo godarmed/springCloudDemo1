@@ -1,4 +1,4 @@
-package com.springcloud.consumerdemo1.FeignTest.feignWrapper.fallbacks;
+package com.springcloud.global.feignWrapper.fallbacks;
 
 public interface IHystrix {
     Throwable setThrowable(Throwable throwable);

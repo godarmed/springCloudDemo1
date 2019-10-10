@@ -1,12 +1,12 @@
-package com.springcloud.consumerdemo1.FeignTest.feignWrapper.config;
+package com.springcloud.global.feignWrapper.config;
 
 import com.alibaba.fastjson.JSON;
-import com.springcloud.consumerdemo1.FeignTest.feignWrapper.exception.HystrixException;
+import com.springcloud.global.feignWrapper.exception.HystrixException;
 import feign.Response;
 import feign.Util;
 import feign.codec.ErrorDecoder;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.Map;

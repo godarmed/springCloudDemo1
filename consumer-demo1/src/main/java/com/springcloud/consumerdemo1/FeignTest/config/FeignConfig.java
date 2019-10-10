@@ -1,39 +1,19 @@
 package com.springcloud.consumerdemo1.FeignTest.config;
 
 import com.springcloud.consumerdemo1.FeignTest.ClientFallbackFeign;
-import com.springcloud.consumerdemo1.FeignTest.feignWrapper.config.DefaultErrorDecoder;
-import com.springcloud.consumerdemo1.FeignTest.feignWrapper.config.DefaultMultipartFileEncoder;
-import com.springcloud.consumerdemo1.FeignTest.feignWrapper.fallbacks.FeignHystrixFactory;
-import com.springcloud.consumerdemo1.FeignTest.feignWrapper.fallbacks.IHystrix;
-import com.springcloud.consumerdemo1.FeignTest.hystrix.ClientFallbackFeignHystrix;
-import feign.RequestTemplate;
-import feign.codec.EncodeException;
+import com.springcloud.global.feignWrapper.config.DefaultErrorDecoder;
+import com.springcloud.global.feignWrapper.config.DefaultMultipartFileEncoder;
+import com.springcloud.global.feignWrapper.fallbacks.FeignHystrixFactory;
 import feign.codec.Encoder;
 import feign.codec.ErrorDecoder;
-import feign.form.ContentType;
-import feign.form.FormEncoder;
-import feign.form.MultipartFormContentProcessor;
-import feign.form.spring.SpringFormEncoder;
-import feign.form.spring.SpringManyMultipartFilesWriter;
-import feign.form.spring.SpringSingleMultipartFileWriter;
 import feign.hystrix.FallbackFactory;
-import lombok.val;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.cloud.openfeign.support.SpringEncoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.lang.reflect.Type;
-import java.util.Collections;
-import java.util.Map;
-
-import static feign.form.ContentType.MULTIPART;
-import static java.util.Collections.singletonMap;
 
 @Configuration
 public class FeignConfig {
@@ -46,7 +26,7 @@ public class FeignConfig {
         return new DefaultErrorDecoder();
     }
 
-    //自定义异常处理工厂类
+    //自定义异常处理工厂类(不唯一，可以根据接口有多个)
     @Bean
     public FallbackFactory fallbackFactory(){
         return new FeignHystrixFactory(ClientFallbackFeign.class);
@@ -58,6 +38,4 @@ public class FeignConfig {
     public Encoder encoder(ObjectFactory<HttpMessageConverters> messageConverters) {
         return new DefaultMultipartFileEncoder(new SpringEncoder(messageConverters));
     }
-
-    //自定义全局异常处理
 }

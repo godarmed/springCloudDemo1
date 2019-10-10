@@ -1,32 +1,26 @@
 package com.springcloud.global.utils;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Type;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
-public class TypeUtils<T> {
+public class TypeUtils {
 
-    private List<T> list;
+    private TypeUtils() { }
 
     /**
      * 获取特定类型的List的参数化类型
      */
-    public Type getListType(){
+    public static Type getListType(Class clazz,String fieldName) {
         Type listType = null;
+        Field listField = null;
         try {
-            listType = TypeUtils.class.getDeclaredField("list").getGenericType();
+            listField = clazz.getDeclaredField(fieldName);
+            if(listField != null){
+                listType = listField.getGenericType();
+            }
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
         return listType;
     }
-
-    public static void main(String[] args) {
-        String str = "aaa,bbb,aa,cc,aaa,aaa,aaa";
-        List<String> sourceList = Arrays.asList(str.split(","));
-        List<String> targetList = sourceList.stream().distinct().collect(Collectors.toList());
-        System.out.println(sourceList.size() > targetList.size());
-    }
-
 }

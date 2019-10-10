@@ -1,11 +1,11 @@
 package com.springcloud.providerdemo1.rabbitmq.service.impl;
 
+import com.springcloud.providerdemo1.rabbitmq.entity.Message;
 import com.springcloud.providerdemo1.rabbitmq.service.MqService;
-import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.support.CorrelationData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.springcloud.providerdemo1.rabbitmq.entity.Message;
 
 import java.util.UUID;
 

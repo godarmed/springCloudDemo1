@@ -6,7 +6,7 @@
         <groupId>com.springcloud</groupId>
         <artifactId>parent-demo</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath/> <!-- lookup parent from repository -->
+
     </parent>
     <groupId>com.springcloud</groupId>
     <artifactId>eureka-demo-keepalive</artifactId>
@@ -85,7 +85,7 @@
                             <mainClass>com.springcloud.eurekademokeepalive.EurekaDemoApplication</mainClass>
                         </manifest>
                     </archive>
-                    <outputDirectory>target/business</outputDirectory>
+                    <outputDirectory>../target/business/</outputDirectory>
                 </configuration>
             </plugin>
             <!--拷贝依赖 copy-dependencies-->
@@ -100,7 +100,7 @@
                             <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>target/lib/</outputDirectory>
+                            <outputDirectory>../target/lib/</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>

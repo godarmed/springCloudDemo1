@@ -1,4 +1,4 @@
-package com.springcloud.consumerdemo1.FeignTest.feignWrapper.exception;
+package com.springcloud.global.feignWrapper.exception;
 
 import com.netflix.hystrix.exception.HystrixBadRequestException;
 import com.springcloud.global.exception.error.IException;
