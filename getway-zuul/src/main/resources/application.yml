@@ -3,12 +3,16 @@ server:
 
 spring:
   application:
-    name: zuul-8000
+    name: zuul-7666
+
+logging:
+  config: classpath:log4j2.yml   # 配置log4j2读取的配置文件
+  file: ../springlogs/zuul-7666.log
 
 eureka:
   client:
     service-url:
-      defaultZone: http://server1:7667/eureka/,http://server2:7668/eureka/
+      defaultZone: http://localhost:7667/eureka/,http://localhost:7668/eureka/
 
 #由于zuul中的actuator默认的安全权限为ture，需改为false，若不修改则会导致无法访问路由管理（localhost:8000/routes）
 #2.x版本写法

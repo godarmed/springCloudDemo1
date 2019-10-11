@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @Service
-@FeignClient(name = "provider-8783",configuration = FeignConfig.class,fallbackFactory = FeignHystrixFactory.class)
+@FeignClient(name = "provider-7669",configuration = FeignConfig.class,fallbackFactory = FeignHystrixFactory.class)
 public interface ClientFallbackFeign {
 
     @RequestMapping("/getUser")

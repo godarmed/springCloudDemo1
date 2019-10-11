@@ -3,9 +3,14 @@ server:
   port: 7668
 spring:
   application:
-    name: spring-cloud-eureka
+    name: eureka-7668
   profiles:
     active: "@profileActive@"
+
+logging:
+  config: classpath:log4j2.yml   # 配置log4j2读取的配置文件
+  file: ../springlogs/eureka-7668.log
+
 #Eureka实例名，集群中根据这里相互识别
 eureka:
   instance:
@@ -19,7 +24,7 @@ eureka:
     #设置EurekaServer的地址,将自身注册到Server2
     #注册中心地址
     service-url:
-      defaultZone: http://server1:7667/eureka/
+      defaultZone: http://localhost:7667/eureka/
 
 eurekaserver:
   ip: server1

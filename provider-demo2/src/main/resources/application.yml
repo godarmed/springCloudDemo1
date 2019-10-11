@@ -1,10 +1,10 @@
 #端口号
 server:
-  port: 8784
+  port: 7670
 #Eureka实例名，集群中根据这里相互识别
 spring:
   application:
-    name: provider
+    name: provider-7670
   rabbitmq:
     host: 149.129.118.215
     port: 5672
@@ -12,6 +12,10 @@ spring:
     password: Zzy123456
     publisher-confirms: true
     virtual-host: /
+
+logging:
+  config: classpath:log4j2.yml   # 配置log4j2读取的配置文件
+  file: ../springlogs/provider-7670.log
 
 eureka:
   #客户端

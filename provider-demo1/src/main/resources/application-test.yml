@@ -1,2 +1,10 @@
 server:
-  port: 9101
+  tomcat:
+    basedir: /root/service/temp/
+
+img:
+  resource-path: /root/service/file/
+
+spring:
+  resources:
+      static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:/root/service/file/

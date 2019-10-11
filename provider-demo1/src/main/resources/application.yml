@@ -2,21 +2,23 @@ server:
   port: 7669
 spring:
   application:
-    name: provider-8783
+    name: provider-7669
   mvc:
     static-path-pattern: /**
   resources:
     static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:D:/temp/imgs/
-
   rabbitmq:
-    host: 149.129.118.215
-    port: 5672
-    username: admin
-    password: Zzy123456
+      host: 149.129.118.215
+      port: 5672
+      username: admin
+      password: Zzy123456
+  profiles:
+      active: "@profileActive@"   #默认生效的配置文件（dev）
+logging:
+  config: classpath:log4j2.yml   # 配置log4j2读取的配置文件
+  file: ../springlogs/provider-7669.log
 
 eureka:
   client:
     service-url:
-      defaultZone: http://server1:7667/eureka/,http://server2:7668/eureka/
-img:
-  resource-path: D:/temp/imgs/
+      defaultZone: http://localhost:7667/eureka/,http://localhost:7668/eureka/

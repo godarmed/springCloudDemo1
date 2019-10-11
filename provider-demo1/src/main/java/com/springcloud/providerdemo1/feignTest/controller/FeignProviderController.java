@@ -6,8 +6,11 @@ import com.springcloud.global.entity.ResultModel;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Hex;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,6 +31,7 @@ import java.util.List;
  * @create: 2018-06-15 16:12
  **/
 @RestController
+@Profile({"dev","test"})
 @Slf4j
 public class FeignProviderController {
 
