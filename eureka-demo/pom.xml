@@ -98,7 +98,7 @@
                             <addClasspath>true</addClasspath>
                             <!--MANIFEST.MF 中 Class-Path加入前缀-->
                             <classpathPrefix>../lib</classpathPrefix>
-                            <!--jar包含不含唯一版本标识-->
+                            <!--jar包含/不含唯一版本标识-->
                             <useUniqueVersions>false</useUniqueVersions>
                             <!--指定入口类-->
                             <mainClass>com.springcloud.eurekademo.EurekaDemoApplication</mainClass>

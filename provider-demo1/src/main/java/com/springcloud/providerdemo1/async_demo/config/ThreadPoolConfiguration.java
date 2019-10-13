@@ -94,7 +94,7 @@ public class ThreadPoolConfiguration implements AsyncConfigurer{
             return () -> {
                 try{
                     //执行异步任务前添加上下文
-                    RequestContextHolder.setRequestAttributes(context);
+                    RequestContextHolder.setRequestAttributes(context,true);
                     //执行异步任务
                     runnable.run();
                 }finally{

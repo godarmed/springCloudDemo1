@@ -30,6 +30,7 @@ public class AsyncTest {
         //上下文获取测试
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = requestAttributes.getRequest();
+        log.info("自定义请求头为[{}]", request.getHeader("MyHeader"));
         log.info("当前线程为 {}，请求方法为 {}，请求路径为：{}", Thread.currentThread().getName(), request.getMethod(), request.getRequestURL().toString());
         //log.info("错误点[{}]",1/0);
         log.info("完成任务[{}]，耗时:[{}]毫秒",taskName,(end - start));

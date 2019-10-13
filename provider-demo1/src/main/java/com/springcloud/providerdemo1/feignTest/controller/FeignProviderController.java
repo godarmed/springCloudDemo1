@@ -1,28 +1,21 @@
 package com.springcloud.providerdemo1.feignTest.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.springcloud.global.entity.DTO.StudentDTO;
 import com.springcloud.global.entity.ResultModel;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.codec.binary.Hex;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Profile;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @program: springcloud-example
@@ -31,7 +24,6 @@ import java.util.List;
  * @create: 2018-06-15 16:12
  **/
 @RestController
-@Profile({"dev","test"})
 @Slf4j
 public class FeignProviderController {
 
@@ -42,16 +34,11 @@ public class FeignProviderController {
     @GetMapping("/getUser")
     public String getUser() {
         System.out.println("获取用户成功");
-        return "{\"username\":\"张三\",\"age\":\"10\"}";
+        throw new RuntimeException("getUserFiled");
+        //return "{\"username\":\"张三\",\"age\":\"10\"}";
     }
 
-    @PostMapping("/setUser")
-    public String getUser(@RequestBody @Valid StudentDTO studentDTO) throws InterruptedException {
-        System.out.println("保存用户成功");
-        return JSON.toJSONString(studentDTO);
-    }
-
-    private final static String fileName = "C:\\Users\\Administrator\\Desktop\\服务号开发相关\\图片样例\\1440,蓝.png";
+    private final static String fileName = "C:\\Users\\Administrator\\Desktop\\图片样例\\192X192.png";
 
     @RequestMapping(value="/getFile",method = {RequestMethod.POST})
     public MultipartFile getFile(){
@@ -73,24 +60,34 @@ public class FeignProviderController {
     }
 
     @RequestMapping(value = "/uploadFile")
-    public ResultModel<List<String>> uploadFiles(@RequestParam("id") String id,@RequestParam("token") String token,@RequestPart(value="file") List<MultipartFile> files){
-        log.info("上传者id为[{}]",JSON.toJSONString(id));
-        log.info("上传者token为[{}]",JSON.toJSONString(token));
+    public String uploadFile(@RequestPart(value="file") MultipartFile file){
+        //返回文件名
+        try {
+            file.getInputStream();
+            log.info("文件名为[{}]",file.getOriginalFilename());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return file.getOriginalFilename();
+    }
+
+    @RequestMapping(value = "/uploadFiles")
+    public ResultModel<List<String>> uploadFiles(@RequestPart(value="file") MultipartFile[] files){
         //保存文件
-        List<File> targetFiles =  saveMultiPartFiles(files);
+        saveMultiPartFiles(files);
         //返回文件名数组
         ResultModel<List<String>> resultModel = new ResultModel<>();
         List<String> fileNames = new ArrayList<>();
-        for (File file : targetFiles) {
-            log.info("文件名为[{}]",file.getName());
-            fileNames.add(file.getName());
+        for (MultipartFile file : files) {
+            log.info("文件名为[{}]",file.getOriginalFilename());
+            fileNames.add(file.getOriginalFilename());
         }
         resultModel.setData(fileNames);
         return resultModel;
     }
 
 
-    private List<File> saveMultiPartFiles(List<MultipartFile> multipartFile){
+    private List<File> saveMultiPartFiles(MultipartFile... multipartFile){
         List<File> files = new ArrayList<>();
         for (MultipartFile file : multipartFile) {
             files.add(multipartFile2File(file,true));
@@ -138,7 +135,7 @@ public class FeignProviderController {
         }
         MessageDigest digest = null;
         FileInputStream in = null;
-        byte buffer[] = new byte[4096];
+        byte buffer[] = new byte[1024];
         int len;
         try {
             digest = MessageDigest.getInstance("MD5");
@@ -150,19 +147,12 @@ public class FeignProviderController {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
-        }finally {
-            if(in!=null){
-                try {
-                    in.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
-        return new String(Hex.encodeHex(digest.digest()));
+        BigInteger bigInt = new BigInteger(1, digest.digest());
+        return bigInt.toString(16);
     }
 
-    //获取byte[]的MD5值
+    //获取文件的MD5值
     public static String getFileMD5(byte[] bytes) {
         if (bytes==null) {
             return null;
@@ -173,9 +163,9 @@ public class FeignProviderController {
             digest.update(bytes);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-            return null;
         }
-        return new String(Hex.encodeHex(digest.digest()));
+        BigInteger bigInt = new BigInteger(1, digest.digest());
+        return bigInt.toString(16);
     }
 
     public static void main(String[] args) throws IOException {
