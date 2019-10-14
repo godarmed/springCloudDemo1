@@ -7,8 +7,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -33,9 +36,12 @@ public class FeignProviderController {
 
     @GetMapping("/getUser")
     public String getUser() {
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = requestAttributes.getRequest();
+        log.info("自定义请求头为[{}]", request.getHeader("Authorization"));
+        log.info("当前线程为 {}，请求方法为 {}，请求路径为：{}", Thread.currentThread().getName(), request.getMethod(), request.getRequestURL().toString());
         System.out.println("获取用户成功");
-        throw new RuntimeException("getUserFiled");
-        //return "{\"username\":\"张三\",\"age\":\"10\"}";
+        return "{\"username\":\"张三\",\"age\":\"10\"}";
     }
 
     private final static String fileName = "C:\\Users\\Administrator\\Desktop\\图片样例\\192X192.png";

@@ -1,12 +1,17 @@
 server:
-  port: 8190
+  port: 7671
 spring:
   application:
-    name: consumer-8190
+    name: consumer-7671
+  rabbitmq:
+    host: 149.129.118.215
+    port: 5672
+    username: admin
+    password: Zzy123456
 eureka:
   client:
     service-url:
-      defaultZone: http://server1:8781/eureka/,http://server2:8782/eureka/
+      defaultZone: http://localhost:7667/eureka/,http://localhost:7668/eureka/
 
 #hystrix的超时时间
 hystrix:
@@ -16,6 +21,7 @@ hystrix:
         timeout:
           enabled: true
         isolation:
+          strategy: SEMAPHORE
           thread:
             timeoutInMilliseconds: 9000
 #ribbon的超时时间

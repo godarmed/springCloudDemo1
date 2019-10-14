@@ -1,9 +1,9 @@
 package com.springcloud.consumerdemo1.FeignTest.hystrix;
 
-import com.eseasky.core.starters.feign.wrapper.exception.HystrixException;
-import com.eseasky.core.starters.feign.wrapper.fallbacks.IHystrix;
 import com.springcloud.consumerdemo1.FeignTest.leo_interface.FeignTestInterface;
 import com.springcloud.global.entity.ResultModel;
+import com.springcloud.global.feignWrapper.exception.HystrixException;
+import com.springcloud.global.feignWrapper.fallbacks.IHystrix;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

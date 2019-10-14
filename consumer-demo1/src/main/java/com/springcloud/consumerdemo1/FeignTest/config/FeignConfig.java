@@ -4,6 +4,8 @@ import com.springcloud.consumerdemo1.FeignTest.ClientFallbackFeign;
 import com.springcloud.global.feignWrapper.config.DefaultErrorDecoder;
 import com.springcloud.global.feignWrapper.config.DefaultMultipartFileEncoder;
 import com.springcloud.global.feignWrapper.fallbacks.FeignHystrixFactory;
+import com.springcloud.global.feignWrapper.interceptor.HeaderCopyInterceptor;
+import feign.RequestInterceptor;
 import feign.codec.Encoder;
 import feign.codec.ErrorDecoder;
 import feign.hystrix.FallbackFactory;
@@ -37,5 +39,11 @@ public class FeignConfig {
     @Scope("prototype")
     public Encoder encoder(ObjectFactory<HttpMessageConverters> messageConverters) {
         return new DefaultMultipartFileEncoder(new SpringEncoder(messageConverters));
+    }
+
+    //feign请求头添加
+    @Bean
+    public RequestInterceptor getRequestInterceptor(){
+        return  new HeaderCopyInterceptor();
     }
 }

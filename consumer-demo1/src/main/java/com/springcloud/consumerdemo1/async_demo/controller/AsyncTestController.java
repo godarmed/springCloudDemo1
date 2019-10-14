@@ -1,6 +1,7 @@
-package com.springcloud.providerdemo1.async_demo.controller;
+/*
+package com.springcloud.consumerdemo1.async_demo.controller;
 
-import com.springcloud.providerdemo1.async_demo.service.AsyncTest;
+import com.springcloud.consumerdemo1.async_demo.service.AsyncTest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,3 +63,4 @@ public class AsyncTestController {
         return "任务全部完成，总耗时"+ (end-start) +"毫秒";
     }
 }
+*/
