@@ -1,10 +1,8 @@
 package com.springcloud.providerdemo1.async_demo.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.omg.CORBA.CurrentHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -25,12 +23,12 @@ public class AsyncTest {
     public Future<String> doTask(String taskName,Integer... taskTime) throws Exception {
         log.info("开始做任务[{}]",taskName);
         long start = System.currentTimeMillis();
-        Thread.sleep(taskTime[0]!=null?taskTime[0]:random.nextInt(10000));
+        //Thread.sleep(taskTime[0]!=null?taskTime[0]:random.nextInt(10000));
         long end = System.currentTimeMillis();
         //上下文获取测试
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = requestAttributes.getRequest();
-        log.info("自定义请求头为[{}]", request.getHeader("MyHeader"));
+        log.info("线程[{}]获取的自定义请求头为[{}]",Thread.currentThread().getName(),request.getHeader("TestHeader"));
         log.info("当前线程为 {}，请求方法为 {}，请求路径为：{}", Thread.currentThread().getName(), request.getMethod(), request.getRequestURL().toString());
         //log.info("错误点[{}]",1/0);
         log.info("完成任务[{}]，耗时:[{}]毫秒",taskName,(end - start));
@@ -38,18 +36,13 @@ public class AsyncTest {
     }
 
     @Async("taskExecutor")
-    public void doTaskWithoutReturn(String taskName,CountDownLatch latch,Integer... taskTime){
+    public void doTaskWithoutReturn(String taskName, CountDownLatch latch, Integer... taskTime){
         try{
             log.info("开始做任务[{}]",taskName);
             long start = System.currentTimeMillis();
             Thread.sleep(taskTime[0]!=null?taskTime[0]:random.nextInt(10000));
-            ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-            HttpServletRequest request = requestAttributes.getRequest();
-            request = (HttpServletRequest) request.startAsync().getRequest();
-            log.info("自定义请求头为[{}]", request.getHeader("MyHeader"));
-            log.info("当前线程为 {}，请求方法为 {}，请求路径为：{}", Thread.currentThread().getName(), request.getMethod(), request.getRequestURL().toString());
+            log.info("线程[{}]获取的自定义请求头为[{}]",Thread.currentThread().getName(),System.getProperty("TestHeader"));
             long end = System.currentTimeMillis();
-            //log.info("错误点[{}]",1/0);
             log.info("完成任务[{}]，耗时:[{}]毫秒",taskName,(end - start));
         }catch (Exception e){
             log.error("出现错误[{}]",e.getStackTrace());

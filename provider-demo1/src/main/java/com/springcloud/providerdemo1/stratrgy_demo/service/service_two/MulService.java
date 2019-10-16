@@ -5,6 +5,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MulService implements RouteStrategy {
+
+    @Override
+    public boolean isThisStrategy(String strategy) {
+        if (strategy.equalsIgnoreCase("Mul")) {
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public String methodOne(String str) {
         return str + "*1";

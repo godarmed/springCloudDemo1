@@ -1,4 +1,4 @@
-package com.springcloud.consumerdemo1.FeignTest;
+package com.springcloud.consumerdemo1.FeignTest.service;
 
 import com.springcloud.consumerdemo1.FeignTest.config.FeignConfig;
 import com.springcloud.global.feignWrapper.fallbacks.FeignHystrixFactory;

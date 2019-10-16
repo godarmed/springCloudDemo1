@@ -1,0 +1,3 @@
+eurekaservers:
+  ip: server1
+  port: 7667

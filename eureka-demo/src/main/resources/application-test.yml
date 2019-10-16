@@ -1,0 +1,11 @@
+#eurekaservers:
+#- server:
+#    ip: localhost
+#    port: 7667
+#- server:
+#    ip: localhost
+#    port: 7668
+
+eurekaservers:
+  ip: server1
+  port: 7667

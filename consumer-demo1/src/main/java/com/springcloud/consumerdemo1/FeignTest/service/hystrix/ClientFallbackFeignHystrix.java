@@ -1,6 +1,6 @@
-package com.springcloud.consumerdemo1.FeignTest.hystrix;
+package com.springcloud.consumerdemo1.FeignTest.service.hystrix;
 
-import com.springcloud.consumerdemo1.FeignTest.ClientFallbackFeign;
+import com.springcloud.consumerdemo1.FeignTest.service.ClientFallbackFeign;
 import com.springcloud.global.feignWrapper.exception.HystrixException;
 import com.springcloud.global.feignWrapper.fallbacks.IHystrix;
 import com.springcloud.global.entity.DTO.StudentDTO;

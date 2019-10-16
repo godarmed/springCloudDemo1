@@ -12,9 +12,7 @@ public class HeaderCopyInterceptor implements RequestInterceptor {
     @Override
     public void apply(RequestTemplate requestTemplate) {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        requestTemplate.header("Content-Type", "application/json; charset=UTF-8");
-        //如果在web环境下，复制请求头
-        if(attributes !=null){
+        if(attributes != null) {    //web环境下
             HttpServletRequest request = attributes.getRequest();
             Enumeration<String> headerNames = request.getHeaderNames();
             if (headerNames != null) {
@@ -22,10 +20,8 @@ public class HeaderCopyInterceptor implements RequestInterceptor {
                     String name = headerNames.nextElement();
                     String values = request.getHeader(name);
                     requestTemplate.header(name, values);
-                }
+                 }
             }
-        }else{  //非Web环境下，添加鉴权信息
-            requestTemplate.header("Authorization", System.getProperty("auth_token"));
         }
     }
 }

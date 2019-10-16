@@ -6,6 +6,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class AddService implements RouteStrategy {
     @Override
+    public boolean isThisStrategy(String strategy) {
+        if (strategy.equalsIgnoreCase("Add")) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public String methodOne(String str) {
         return str + "+1";
     }

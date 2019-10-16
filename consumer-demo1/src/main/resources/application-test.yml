@@ -4,3 +4,11 @@ server:
 
 img:
   resource-path: /root/service/file/
+
+eurekaservers:
+  - server:
+      ip: localhost
+      port: 7667
+  - server:
+      ip: localhost
+      port: 7668

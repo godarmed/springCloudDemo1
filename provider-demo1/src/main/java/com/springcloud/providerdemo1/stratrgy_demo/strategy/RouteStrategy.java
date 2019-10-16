@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface RouteStrategy {
+    public boolean isThisStrategy(String strategy);
+
     public String methodOne(String str);
 
     public String methodTwo(String str);

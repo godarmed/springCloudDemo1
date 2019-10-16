@@ -11,7 +11,23 @@ import java.util.List;
 @Slf4j
 public class SetValuesUtil {
 
-    private static final Integer arrayNum = 10;
+    private static final Integer arrayNum = 1;
+
+    /**
+     * 基本类型、包装类型、String类型
+     */
+    private static String[] basicTypes = {"java.lang.Integer",
+            "java.lang.Double",
+            "java.lang.Float",
+            "java.lang.Long",
+            "java.lang.Short",
+            "java.lang.Byte",
+            "java.lang.Boolean",
+            "java.lang.Character",
+            "java.lang.String",
+            "int","double","long","short","byte","boolean","char","float"};
+
+
 
     /**
      * 反射给对象的所有属性,包括继承的属性赋一个默认值
@@ -82,7 +98,7 @@ public class SetValuesUtil {
             if (type.indexOf("class [L") != -1) {
                 String arrayClassName = type.substring(type.indexOf("[L") + 2, type.lastIndexOf(";"));
                 Class theClass = Class.forName(arrayClassName);
-                Array array = (Array) Array.newInstance(theClass, arrayNum, 0);
+                Array array = (Array) Array.newInstance(theClass, arrayNum);
                 for (int j = 0; j < arrayNum; j++) {
                     array.set(array, j, setObjectReflect(theClass.newInstance()));
                 }

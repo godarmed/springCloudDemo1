@@ -1,6 +1,6 @@
 package com.springcloud.consumerdemo1.FeignTest.controlller;
 
-import com.springcloud.consumerdemo1.FeignTest.ClientFallbackFeign;
+import com.springcloud.consumerdemo1.FeignTest.service.ClientFallbackFeign;
 import com.springcloud.global.entity.DTO.StudentDTO;
 import com.springcloud.global.entity.ResultModel;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +14,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.Collections;
 import java.util.List;
 
 /**

@@ -8,10 +8,10 @@ spring:
   resources:
     static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:D:/temp/imgs/
   rabbitmq:
-      host: 149.129.118.215
-      port: 5672
-      username: admin
-      password: Zzy123456
+      host: 192.168.1.232
+      port: 9715
+      username: mnet
+      password: mnet
   profiles:
       active: "@profileActive@"   #默认生效的配置文件（dev）
 logging:
@@ -22,3 +22,6 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:7667/eureka/,http://localhost:7668/eureka/
+
+img:
+  resource-path: D:/temp/imgs/

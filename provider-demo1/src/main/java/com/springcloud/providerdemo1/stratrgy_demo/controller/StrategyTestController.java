@@ -1,9 +1,11 @@
 package com.springcloud.providerdemo1.stratrgy_demo.controller;
 
 
+import com.springcloud.global.utils.SpringUtils;
 import com.springcloud.providerdemo1.stratrgy_demo.service.service_one.AddService;
 import com.springcloud.providerdemo1.stratrgy_demo.service.service_two.MulService;
 import com.springcloud.providerdemo1.stratrgy_demo.strategy.RouteContext;
+import com.springcloud.providerdemo1.stratrgy_demo.strategy.RouteStrategy;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -11,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Collection;
+import java.util.Collections;
 
 @RestController
 @Api(value="策略模式测试接口")
@@ -22,21 +27,17 @@ public class StrategyTestController{
     @Autowired
     AddService addService;
 
-    @Autowired
-    MulService mulService;
-
     private void initContext(String strategySign){
         if(StringUtils.isNotBlank(strategySign)){
-            switch(strategySign){
-                case "addStrategy":
-                    routeContext.setRouteStrategy(addService);
+            Collection<RouteStrategy> beans = SpringUtils.getBeanOfType(RouteStrategy.class);
+            for (RouteStrategy bean : beans) {
+                if(bean.isThisStrategy(strategySign)){
+                    routeContext.setRouteStrategy(bean);
                     break;
-                case "mulStrategy":
-                    routeContext.setRouteStrategy(mulService);
-                    break;
-                default:
-                    routeContext.setRouteStrategy(addService);
-                    break;
+                }
+            }
+            if(routeContext == null){
+                routeContext.setRouteStrategy(addService);
             }
         }else{
             throw new RuntimeException("未选择策略");

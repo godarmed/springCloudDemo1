@@ -6,6 +6,10 @@ import java.util.ArrayList;
 class People<U, V, T> {
 }
 
+/**
+ * Type接口测试
+ * @param <T>
+ */
 public class TypeTest<T> {
     private ArrayList<String> people;
 
