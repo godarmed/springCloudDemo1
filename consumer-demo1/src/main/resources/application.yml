@@ -9,6 +9,11 @@ logging:
 spring:
   application:
     name: consumer-7671
+  rabbitmq:
+      host: 149.129.118.215
+      port: 5672
+      username: admin
+      password: Zzy123456
   servlet:
       multipart:
         max-file-size: 100MB    #允许最大文件大小

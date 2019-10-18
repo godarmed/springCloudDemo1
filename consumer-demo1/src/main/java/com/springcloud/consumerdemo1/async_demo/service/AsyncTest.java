@@ -1,6 +1,9 @@
 package com.springcloud.consumerdemo1.async_demo.service;
 
+import com.springcloud.consumerdemo1.annotation_demo.annotation.Log;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.aop.framework.AopContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,9 @@ import java.util.concurrent.Future;
 public class AsyncTest {
     //@Autowired
     //private ClientFallbackFeign clientFallbackFeign;
+
+    @Autowired
+    private AopTestService aopTestService;
 
     public static Random random = new Random();
 
@@ -58,4 +64,29 @@ public class AsyncTest {
         }
     }
 
+    @Async("taskExecutor")
+    public void aopTest(CountDownLatch latch, Integer... taskTime){
+        try{
+            aopTestService.sayHello(false);
+        }catch (Exception e){
+            log.error("出现错误[{}]",e.getStackTrace());
+        }finally{
+            latch.countDown();
+        }
+    }
+
+
+
+    public String sayHello(boolean isThrowable) {
+        log.info("HelloController sayHello:{}","hello world!");
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if(isThrowable){
+            throw new RuntimeException("自定义异常");
+        }
+        return "hello";
+    }
 }

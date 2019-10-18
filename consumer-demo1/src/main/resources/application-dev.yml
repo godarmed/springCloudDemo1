@@ -9,10 +9,10 @@ eurekaservers:
     port: 7668
 
 async:
-  max-pool-size: 80
-  core-pool-size: 30
-  queue-capacity: 500
-  keepalive-seconds: 1200
+  max-pool-size: 8
+  core-pool-size: 3
+  queue-capacity: 50
+  keepalive-seconds: 120
   allow-core-thread-timeout: true
   thread-name-prefix: 自定义线程池
   rejected-execution-handler: ABORTPOLICY
