@@ -7,19 +7,51 @@ logging:
   file: ../springlogs/consumer-7671.log
 
 spring:
+  datasource:
+    name:  ${database.name}
+    url: ${database.url}
+    username: ${database.username}
+    password: ${database.password}
+    driver-class-name: com.mysql.jdbc.Driver
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+  rabbitmq:
+    host: ${nosql.rabbitmq.host}
+    port: ${nosql.rabbitmq.port}
+    username: ${nosql.rabbitmq.username}
+    password: ${nosql.rabbitmq.password}
+  redis:
+    database: 3
+    host: ${nosql.redis.host}
+    port: ${nosql.redis.port}
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 1
   application:
     name: consumer-7671
-  rabbitmq:
-      host: 149.129.118.215
-      port: 5672
-      username: admin
-      password: Zzy123456
   servlet:
-      multipart:
-        max-file-size: 100MB    #允许最大文件大小
-        max-request-size: 100MB   #单个请求允许最大文件大小
+    multipart:
+      max-file-size: 100MB    #允许最大文件大小
+      max-request-size: 100MB   #单个请求允许最大文件大小
   profiles:
     active: "@profileActive@"   #默认生效的配置文件（dev）
+  devtools:
+    restart:
+      enabled: false
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+
+#mybatis.config-location=classpath:mybatis-config.xml
+#mybatis mapper文件的位置
+mybatis:
+  mapper-locations: classpath*:mybatis/mapper/*.xml
+#扫描pojo类的位置,在此处指明扫描实体类的包，在mapper中就可以不用写pojo类的全路径名了
+  type-aliases-package: com.springcloud.consumerdemo1.mybatis_demo.entity
+
 eureka:
   client:
     service-url:
@@ -35,12 +67,12 @@ hystrix:
         isolation:
           strategy: SEMAPHORE
           thread:
-            timeoutInMilliseconds: 18000
+            timeoutInMilliseconds: 5000
 #ribbon的超时时间
 ribbon:
   OkToRetryOnAllOperations: false #对所有操作请求都进行重试,默认false
-  ReadTimeout: 9000   #负载均衡超时时间，默认值5000
-  ConnectTimeout: 9000 #ribbon请求连接的超时时间，默认值2000
+  ReadTimeout: 2500   #负载均衡超时时间，默认值5000
+  ConnectTimeout: 2500 #ribbon请求连接的超时时间，默认值2000
   MaxAutoRetries: 0     #对当前实例的重试次数，默认0
   MaxAutoRetriesNextServer: 1 #对切换实例的重试次数，默认1
   eureka:
@@ -50,12 +82,3 @@ ribbon:
 feign:
   hystrix:
     enabled: true
-
-async:
-  max-pool-size: 8
-  core-pool-size: 3
-  queue-capacity: 50
-  keepalive-seconds: 120
-  allow-core-thread-timeout: true
-  thread-name-prefix: 自定义线程池
-  rejected-execution-handler: ABORTPOLICY

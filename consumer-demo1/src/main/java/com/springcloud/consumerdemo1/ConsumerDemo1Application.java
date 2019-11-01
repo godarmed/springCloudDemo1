@@ -1,7 +1,7 @@
 package com.springcloud.consumerdemo1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.amqp.rabbit.annotation.EnableRabbit;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.boot.SpringApplication;
@@ -10,19 +10,18 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScans;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
 
-@SpringBootApplication(scanBasePackages = {"com.springcloud.consumerdemo1","com.springcloud.global"})
+@SpringBootApplication(scanBasePackages = {"com.springcloud.consumerdemo1", "com.springcloud.global"})
 @EnableDiscoveryClient
 @EnableFeignClients
-//@RibbonClient(name = "provider-8783")
-@EnableRabbit
+//@EnableRabbit
 @EnableAsync
 @EnableScheduling
+@MapperScan("com.springcloud.consumerdemo1.mybatis_demo.mapper")
 @EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true)
 public class ConsumerDemo1Application {
 

@@ -1,7 +1,6 @@
 package com.springcloud.consumerdemo1.annotation_demo.aop_service;
 
 import com.alibaba.fastjson.JSON;
-import com.springcloud.consumerdemo1.annotation_demo.annotation.Log;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.*;
@@ -10,8 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.NamedThreadLocal;
 import org.springframework.stereotype.Component;
-
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.Date;
 
 @Aspect
@@ -27,9 +27,12 @@ public class LogAspect {
 
     private static final ThreadLocal<String> methodName = new NamedThreadLocal<String>("method name");
 
+    private static final ThreadLocal<String> args = new NamedThreadLocal<String>("method args");
+
     //织入点
     @Pointcut("@within(com.springcloud.consumerdemo1.annotation_demo.annotation.Log)" +
-            "||@annotation(com.springcloud.consumerdemo1.annotation_demo.annotation.Log)")
+            "||@annotation(com.springcloud.consumerdemo1.annotation_demo.annotation.Log)" +
+            "||this(com.springcloud.consumerdemo1.FeignTest.service.ClientFallbackFeign)")
     public void logPointCut(){}
 
     /**
@@ -39,7 +42,7 @@ public class LogAspect {
     public void doBefore(JoinPoint joinPoint){
         doBeforeMethod(joinPoint);
         //获取启动时间,当前类和当前方法
-        log.info("[前置通知][{}]类中的[{}]方法启动,开始时间：[{}]",className.get(),methodName.get(),new Date(beginTimeThreadLocal.get()));
+        log.info("[前置通知][{}]类中的[{}]方法启动,\n其入参为[{}],开始时间：[{}]",className.get(),methodName.get(),args.get(),new Date(beginTimeThreadLocal.get()));
     }
 
     /**
@@ -72,14 +75,14 @@ public class LogAspect {
     }
 
     /**
-     * 是否存在注解，如果存在就获取
+     * 是否存在某个注解，如果存在就获取
      */
-    private static Log getAnnotationLog(JoinPoint joinPoint) throws Exception {
+    private static <T extends Annotation> T getAnnotationLog(JoinPoint joinPoint, Class<T> annotationClass){
         Signature signature = joinPoint.getSignature();
         MethodSignature methodSignature = (MethodSignature) signature;
         Method method = methodSignature.getMethod();
         if (method != null) {
-            return method.getAnnotation(Log.class);
+            return method.getAnnotation(annotationClass);
         }
         return null;
     }
@@ -90,12 +93,16 @@ public class LogAspect {
     private void doBeforeMethod(JoinPoint joinPoint) {
         try {
             // 获得类名称
-            String className = joinPoint.getTarget().getClass().getName();
+            String className = getRealClass(joinPoint);
             // 获得方法名称
-            String methodName = joinPoint.getSignature().getName();;
+            String methodName = joinPoint.getSignature().getName();
+            //获得入参
+            String args = JSON.toJSONString(joinPoint.getArgs());
+
             //打印日志，如有需要还可以存入数据库
             this.className.set(className);
             this.methodName.set(methodName);
+            this.args.set(args);
             this.beginTimeThreadLocal.set(System.currentTimeMillis());
         } catch (Exception exp) {
             // 记录本地异常日志
@@ -115,9 +122,30 @@ public class LogAspect {
             this.beginTimeThreadLocal.remove();
         } catch (Exception exp) {
             // 记录本地异常日志
-            log.error("==最终通知异常==异常信息:{}", exp.getMessage());
+            log.error("==后置通知异常==异常信息:{}", exp.getMessage());
             exp.printStackTrace();
         }
     }
 
+    /**
+     * 获取方法的实际类
+     * PS:因为直接获取的是代理类，需要获取实际类型的
+     */
+    private String getRealClass(JoinPoint joinPoint){
+        String className = joinPoint.getTarget().getClass().getName();
+        if(className.indexOf("com.sun.proxy.$Proxy") !=  -1){   //如果是代理类
+            //查看有无继承的父类
+            Type[] interfaces = joinPoint.getTarget().getClass().getGenericInterfaces();
+            if(interfaces.length > 0){
+                className = interfaces[0].getTypeName();
+            }else{
+                //查看有无实现的接口
+                Type superClass = joinPoint.getTarget().getClass().getGenericSuperclass();
+                if(superClass != null){
+                    className = superClass.getTypeName();
+                }
+            }
+        }
+        return className;
+    }
 }

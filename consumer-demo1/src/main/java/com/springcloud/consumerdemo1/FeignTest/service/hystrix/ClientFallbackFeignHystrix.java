@@ -33,7 +33,7 @@ public class ClientFallbackFeignHystrix implements ClientFallbackFeign,IHystrix{
     @Override
     public String getUser() {
         log.info("getUser方法调用失败!");
-        throw new HystrixException(500,throwable.getMessage());
+        throw new RuntimeException(throwable.getMessage());
         //return "getUser方法调用失败!";
     }
 

@@ -74,19 +74,4 @@ public class AsyncTest {
             latch.countDown();
         }
     }
-
-
-
-    public String sayHello(boolean isThrowable) {
-        log.info("HelloController sayHello:{}","hello world!");
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        if(isThrowable){
-            throw new RuntimeException("自定义异常");
-        }
-        return "hello";
-    }
 }

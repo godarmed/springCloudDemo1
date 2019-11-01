@@ -16,3 +16,19 @@ async:
   allow-core-thread-timeout: true
   thread-name-prefix: 自定义线程池
   rejected-execution-handler: ABORTPOLICY
+
+nosql:
+  redis:
+    host: 149.129.118.215
+    port: 6379
+  rabbitmq:
+    host: 149.129.118.215
+    port: 5672
+    username: admin
+    password: Zzy123456
+
+database:
+  name: test
+  url: jdbc:mysql://localhost:3306/mybatis_test
+  username: root
+  password: Zzy123456

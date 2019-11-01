@@ -1,6 +1,7 @@
 package com.springcloud.consumerdemo1.FeignTest.service;
 
 import com.springcloud.consumerdemo1.FeignTest.config.FeignConfig;
+import com.springcloud.consumerdemo1.annotation_demo.annotation.Log;
 import com.springcloud.global.feignWrapper.fallbacks.FeignHystrixFactory;
 import com.springcloud.global.entity.DTO.StudentDTO;
 import com.springcloud.global.entity.ResultModel;
@@ -16,6 +17,12 @@ import java.util.List;
 @FeignClient(name = "provider-7669",configuration = FeignConfig.class,fallbackFactory = FeignHystrixFactory.class)
 public interface ClientFallbackFeign {
 
+    public static void main(String[] args) {
+        String str = ClientFallbackFeign.class.getGenericInterfaces().toString();
+        String superclass = ClientFallbackFeign.class.getGenericSuperclass().getTypeName();
+    }
+
+    @Log
     @RequestMapping("/getUser")
     public String getUser();
 
