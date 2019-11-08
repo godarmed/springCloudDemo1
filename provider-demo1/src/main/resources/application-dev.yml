@@ -1,2 +1,13 @@
 img:
   resource-path: D:/temp/imgs/
+
+eurekaservers:
+  - ip: localhost
+    port: 7667
+  - ip: localhost
+    port: 7668
+
+nosql:
+  redis:
+    host: 149.129.118.215
+    port: 6379

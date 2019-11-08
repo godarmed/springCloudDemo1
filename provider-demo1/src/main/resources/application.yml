@@ -1,27 +1,62 @@
 server:
   port: 7669
+  servlet:
+    context-path: /Provider-7669
 spring:
   application:
     name: provider-7669
   mvc:
     static-path-pattern: /**
   resources:
-    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:D:/temp/imgs/
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,${img.resource-path}
   rabbitmq:
-      host: 192.168.1.232
-      port: 9715
-      username: mnet
-      password: mnet
+    host: 192.168.1.232
+    port: 9715
+    username: mnet
+    password: mnet
+  redis:
+    database: 3
+    host: ${nosql.redis.host}
+    port: ${nosql.redis.port}
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 1
+  servlet:
+    multipart:
+      max-file-size: 100MB    #允许最大文件大小
+      max-request-size: 100MB   #单个请求允许最大文件大小
   profiles:
-      active: "@profileActive@"   #默认生效的配置文件（dev）
+    active: "@profileActive@"   #默认生效的配置文件（dev）
 logging:
   config: classpath:log4j2.yml   # 配置log4j2读取的配置文件
   file: ../springlogs/provider-7669.log
 
 eureka:
+  instance:
+    prefer-ip-address: true
+    hostname: ${spring.application.name}
+    instance-id: ${eureka.instance.hostname}:${spring.cloud.client.ip-address}:${server.port}
+    lease-expiration-duration-in-seconds: 30
+    leaseRenewalIntervalInSeconds: 10
+    health-check-url-path: ${server.servlet.context-path}/actuator/health
+#  如果项目配置有 server.servlet.context-path 属性，想要被 spring boot admin 监控，就要配置以下属性
+    metadata-map:
+      management:
+        context-path: ${server.servlet.context-path}/actuator
   client:
+    registryFetchIntervalSeconds: 5
+    healthcheck:
+      enabled: true
     service-url:
-      defaultZone: http://localhost:7667/eureka/,http://localhost:7668/eureka/
+      defaultZone: http://${eurekaservers[0].ip}:${eurekaservers[0].port}/eureka/,http://${eurekaservers[1].ip}:${eurekaservers[1].port}/eureka/
 
-img:
-  resource-path: D:/temp/imgs/
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always

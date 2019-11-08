@@ -30,3 +30,14 @@ eurekaserver:
   ip: server1
   port: 7667
 
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+

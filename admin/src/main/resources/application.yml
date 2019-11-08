@@ -1,0 +1,56 @@
+#端口号
+server:
+  port: 7665
+  servlet:
+    context-path: /Admin-7665
+spring:
+  application:
+    name: admin-7665
+  security:
+      user:
+        name: leo
+        password: zzy123456
+  boot:
+    admin:
+      ui:
+        title: Leo-admin
+  profiles:
+    active: "@profileActive@"
+
+logging:
+  config: classpath:log4j2.yml   # 配置log4j2读取的配置文件
+  file: ../springlogs/admin-7665.log
+
+#Eureka实例名，集群中根据这里相互识别
+eureka:
+  instance:
+    prefer-ip-address: true
+    hostname: ${spring.application.name}
+    instance-id: ${eureka.instance.hostname}:${spring.cloud.client.ip-address}:${server.port}
+    lease-expiration-duration-in-seconds: 30
+    leaseRenewalIntervalInSeconds: 10
+    health-check-url-path: ${server.servlet.context-path}/actuator/health
+    #  如果项目配置有 server.servlet.context-path 属性，想要被 spring boot admin 监控，就要配置以下属性
+    metadata-map:
+      user.name: leo
+      user.password: zzy12345
+      management:
+        context-path: ${server.servlet.context-path}/actuator
+  client:
+    registryFetchIntervalSeconds: 5
+    healthcheck:
+      enabled: true
+    service-url:
+      defaultZone: http://${eurekaservers[0].ip}:${eurekaservers[0].port}/eureka/,http://${eurekaservers[1].ip}:${eurekaservers[1].port}/eureka/
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+

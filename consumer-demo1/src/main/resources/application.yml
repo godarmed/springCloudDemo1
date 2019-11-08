@@ -7,6 +7,8 @@ logging:
   file: ../springlogs/consumer-7671.log
 
 spring:
+  application:
+    name: consumer-7671
   datasource:
     name:  ${database.name}
     url: ${database.url}
@@ -29,8 +31,6 @@ spring:
         max-active: 8
         max-idle: 8
         min-idle: 1
-  application:
-    name: consumer-7671
   servlet:
     multipart:
       max-file-size: 100MB    #允许最大文件大小
@@ -53,7 +53,23 @@ mybatis:
   type-aliases-package: com.springcloud.consumerdemo1.mybatis_demo.entity
 
 eureka:
+  instance:
+    prefer-ip-address: true
+    hostname: ${spring.application.name}
+    instance-id: ${eureka.instance.hostname}:${spring.cloud.client.ip-address}:${server.port}
+    lease-expiration-duration-in-seconds: 30
+    leaseRenewalIntervalInSeconds: 10
+    health-check-url-path: ${server.servlet.context-path}/actuator/health
+    #  如果项目配置有 server.servlet.context-path 属性，想要被 spring boot admin 监控，就要配置以下属性
+    metadata-map:
+      user.name: leo
+      user.password: zzy12345
+      management:
+        context-path: ${server.servlet.context-path}/actuator
   client:
+    registryFetchIntervalSeconds: 5
+    healthcheck:
+      enabled: true
     service-url:
       defaultZone: http://${eurekaservers[0].ip}:${eurekaservers[0].port}/eureka/,http://${eurekaservers[1].ip}:${eurekaservers[1].port}/eureka/
 
@@ -82,3 +98,12 @@ ribbon:
 feign:
   hystrix:
     enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
